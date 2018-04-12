@@ -1,0 +1,43 @@
+{
+  "name": "humansjs",
+  "version": "0.0.0",
+  "description": "WIP",
+  "author": {
+    "name": "Leszek Pietrzak",
+    "email": "smutnyleszek@gmail.com"
+  },
+  "private": false,
+  "homepage": "https://github.com/smutnyleszek/humansjs",
+  "repository": "git+https://github.com/smutnyleszek/humansjs.git",
+  "bugs": "https://github.com/smutnyleszek/humansjs/issues",
+  "license": "CC0-1.0",
+  "scripts": {
+    "test": "jest",
+    "test-watch": "jest --watchAll --coverage",
+    "start": "parcel -p 2038 src/index.html -d dev",
+    "build-docs": "rm -rf docs && parcel build src/index.html -d docs --public-url ./ --no-cache && npm run copy-static-files",
+    "copy-static-files": "cp CNAME favicon.png humans.txt LICENSE manifest.json favicon.ico favicon.png docs"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.1.1",
+    "@types/lodash": "^4.14.101",
+    "jest": "^22.2.0",
+    "parcel-bundler": "^1.4.1",
+    "ts-jest": "^22.0.3",
+    "typescript": "^2.7.1"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js?|ts?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
+}

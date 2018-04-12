@@ -1,0 +1,14 @@
+# Jest
+coverage
+
+# NPM
+node_modules
+npm-debug.log
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Parcel
+.cache
+dev
