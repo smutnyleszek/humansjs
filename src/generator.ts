@@ -8,6 +8,10 @@ class Generator {
     const maxFloor = Math.floor(max);
     return Math.floor(randomNumber * (maxFloor - minCeil + 1)) + minCeil;
   }
+
+  public getRandomPercent(): number {
+    return this.getRandomNumber(0, 100);
+  }
 }
 
 export const generator = new Generator();

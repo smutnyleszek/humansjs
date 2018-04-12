@@ -6,7 +6,6 @@ class HumanExistence {
   private static readonly initialPopulation: number = 100;
   private static readonly targetPopulation: number = 10000;
   private static readonly yearTime: number = 0.1 * 1000; // seconds
-  private static readonly loveChance: number = 25;
   private static readonly catastropheChance: number = 5;
 
   private humans: Human[] = [];
@@ -68,18 +67,27 @@ class HumanExistence {
       for (let i = this.humans.length - 1; i >= 0; i--) {
         const human = this.humans[i];
         const mate = this.getRandomHuman();
-        if (
-          generator.getRandomNumber(0, 100) <= HumanExistence.loveChance &&
-          human.isAdult() &&
-          mate.isAdult()
-        ) {
-          const child = new Human((human.mortality + mate.mortality) / 2);
+        if (this.isLove(human, mate)) {
+          const child = new Human(this.calculateAverageVigor(human, mate));
           this.humans.push(child);
           bornCount++;
         }
       }
     }
     return bornCount;
+  }
+
+  private calculateAverageVigor(human1: Human, human2: Human): number {
+    return (human1.vigor + human2.vigor) / 2;
+  }
+
+  private isLove(human1: Human, human2: Human): boolean {
+    const loveChance = this.calculateAverageVigor(human1, human2);
+    return (
+      human1.isAdult() &&
+      human2.isAdult() &&
+      loveChance >= generator.getRandomPercent()
+    );
   }
 
   private buryDead(): number {
@@ -93,13 +101,15 @@ class HumanExistence {
     return diedCount;
   }
 
-  // always takes greater half of population (if happens)
+  // always takes random half of population (if happens)
   private applyRandomCatastrophicEvent(): number {
-    if (generator.getRandomNumber(0, 100) <= HumanExistence.catastropheChance) {
+    if (HumanExistence.catastropheChance >= generator.getRandomPercent()) {
+      const originalCount = this.humans.length;
       const halfMark = Math.floor(this.humans.length * 0.5);
-      const died = this.humans.slice(0, halfMark);
-      this.humans = this.humans.slice(halfMark, this.humans.length - 1);
-      return died.length;
+      for (let i = halfMark; i >= 0; i--) {
+        this.humans.splice(Math.floor(Math.random() * this.humans.length), 1);
+      }
+      return originalCount - this.humans.length;
     } else {
       return 0;
     }
