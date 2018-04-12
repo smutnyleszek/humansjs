@@ -1,0 +1,19 @@
+{
+  "name": "humansjs",
+  "short_name": "humansjs",
+  "description": "WIP",
+  "lang": "en-US",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "48x48 72x72 96x96 128x128 256x256 512x512",
+      "type": "image/png"
+    }
+  ],
+  "prefer_related_applications": false
+}
