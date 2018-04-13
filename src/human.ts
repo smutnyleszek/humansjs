@@ -1,15 +1,27 @@
 import { generator } from "./generator";
 
 export class Human {
+  // https://menstrual-cycle-calculator.com/chance-pregnant-unprotected-sex/
+  public static readonly pregnancyChance: number = 30; // %
+
   public vigor: number;
   public lifespan: number;
   public age: number = 0;
 
   private static readonly baseVigor: number = 50; // %
-  private static readonly maxAge: number = 120;
-  private static readonly reproductionAge: number = 15;
+  // https://en.wikipedia.org/wiki/List_of_the_verified_oldest_people
+  private static readonly maxAge: number = 122;
+  // https://en.wikipedia.org/wiki/Age_and_female_fertility
+  private static readonly reproductionAgeMin: number = 12;
+  // https://en.wikipedia.org/wiki/Pregnancy_over_age_50
+  private static readonly reproductionAgeMax: number = 72;
 
-  public constructor(inheritedVigor: number = Human.baseVigor) {
+  public constructor(parent1?: Human, parent2?: Human) {
+    let inheritedVigor = Human.baseVigor;
+    if (parent1 instanceof Human && parent2 instanceof Human) {
+      inheritedVigor = Human.calculateAverageVigor(parent1, parent2);
+    }
+
     this.vigor = this.generateVigor(inheritedVigor);
     this.lifespan = this.generateLifespan();
   }
@@ -22,8 +34,16 @@ export class Human {
     return this.age >= this.lifespan;
   }
 
-  public isAdult(): boolean {
-    return this.age >= Human.reproductionAge;
+  public isBaby(): boolean {
+    return this.age < Human.reproductionAgeMin;
+  }
+
+  public isElder(): boolean {
+    return this.age > Human.reproductionAgeMax;
+  }
+
+  public isFertile(): boolean {
+    return !this.isBaby() && !this.isElder();
   }
 
   // returns non-negative number
@@ -42,5 +62,9 @@ export class Human {
     return Math.floor(
       generator.getRandomNumber(0, Human.maxAge) * (this.vigor / 100)
     );
+  }
+
+  public static calculateAverageVigor(human1: Human, human2: Human): number {
+    return (human1.vigor + human2.vigor) / 2;
   }
 }
