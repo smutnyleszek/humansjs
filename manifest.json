@@ -1,7 +1,7 @@
 {
   "name": "humansjs",
   "short_name": "humansjs",
-  "description": "WIP",
+  "description": "Human existence simulator",
   "lang": "en-US",
   "start_url": "/",
   "display": "standalone",

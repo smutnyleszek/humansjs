@@ -1,3 +1,3 @@
 # humansjs
 
-WIP
+Human existence simulator. Partially science based.
