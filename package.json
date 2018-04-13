@@ -1,7 +1,7 @@
 {
   "name": "humansjs",
   "version": "0.0.0",
-  "description": "Human existence simulator",
+  "description": "Zero-player human existence simulator",
   "author": {
     "name": "Leszek Pietrzak",
     "email": "smutnyleszek@gmail.com"

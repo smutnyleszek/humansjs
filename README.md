@@ -1,3 +1,3 @@
 # humansjs
 
-Human existence simulator. Partially science based.
+Zero-player Zero-player human existence simulator. Partially science based.
