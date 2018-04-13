@@ -1,27 +1,19 @@
 class Logger {
-  private static readonly loggerId = "logger";
-  private loggerEl: HTMLElement = document.createElement("pre");
-
-  public log(data: any): void {
-    let message = data;
-    if (typeof data !== "string") {
-      message = JSON.stringify(data);
-    }
-
-    if (this.verifyEl()) {
-      this.loggerEl.innerText += `\n${message}`;
-    }
+  public constructor(private autoScroll: boolean) {
+    document.body.style.whiteSpace = "pre";
+    document.body.style.fontFamily = "monospace";
   }
 
-  private verifyEl(): boolean {
-    if (document.getElementById(Logger.loggerId)) {
-      return true;
-    } else {
-      this.loggerEl.id = Logger.loggerId;
-      document.body.appendChild(this.loggerEl);
-      return true;
+  public log(message: string): void {
+    document.body.appendChild(document.createTextNode(`${message}\n`));
+
+    if (this.autoScroll) {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "instant"
+      });
     }
   }
 }
 
-export const logger = new Logger();
+export const logger = new Logger(true);
