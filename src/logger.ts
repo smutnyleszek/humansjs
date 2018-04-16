@@ -9,9 +9,11 @@ class Logger {
       // enable autoscroll only if scrolled to almost end of page
       window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 30
     ) {
-      window.scrollTo({
-        top: document.body.offsetHeight,
-        behavior: "instant"
+      document.body.scrollIntoView({
+        behavior: "instant",
+        // browser is aligning to the bottom of element
+        block: "end",
+        inline: "nearest"
       });
     }
   }
