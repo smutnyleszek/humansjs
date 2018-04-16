@@ -7,7 +7,8 @@ class Logger {
     if (
       this.autoScroll &&
       // enable autoscroll only if scrolled to almost end of page
-      window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 30
+      true
+      // window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 30
     ) {
       document.body.scrollIntoView({
         behavior: "instant",
