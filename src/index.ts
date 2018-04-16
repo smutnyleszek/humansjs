@@ -2,6 +2,12 @@ import { logger } from "./logger";
 import { Human } from "./human";
 import { generator } from "./generator";
 
+declare global {
+  interface String {
+    padEnd(maxLength: number, fillString?: string): string;
+  }
+}
+
 interface ICatastrophe {
   type: string;
   killPercentage: number;
@@ -11,7 +17,7 @@ class HumanExistence {
   // https://en.wikipedia.org/wiki/Minimum_viable_population
   private static readonly initialPopulation: number = 4129;
   private static readonly targetPopulation: number = 100000;
-  private static readonly yearTime: number = 0.1 * 1000; // seconds
+  private static readonly yearTime: number = 0.2 * 1000; // seconds
 
   private static readonly catastrophes: ICatastrophe[] = [
     { type: "🤢", killPercentage: 40 },
@@ -73,20 +79,20 @@ class HumanExistence {
 
     // births and deaths
     if (catastrophe === null) {
-      messageParts.push(`💀${deadCount}`);
+      messageParts.push(`⚰️${deadCount}`.padEnd(6));
     } else {
-      messageParts.push(`${catastrophe.type}${deadCount}`);
+      messageParts.push(`${catastrophe.type}${deadCount}`.padEnd(6));
     }
 
-    messageParts.push(`🤱${bornCount}`);
+    messageParts.push(`🤱${bornCount}`.padEnd(6));
 
     // current population
     if (deadCount > bornCount) {
-      messageParts.push(`📉${this.humans.length}`);
+      messageParts.push(`${this.humans.length}↓`);
     } else if (bornCount > deadCount) {
-      messageParts.push(`📈${this.humans.length}`);
+      messageParts.push(`${this.humans.length}↑`);
     } else {
-      messageParts.push(`⚖️${this.humans.length}`);
+      messageParts.push(`${this.humans.length}–`);
     }
 
     const babyCount = this.getBabyCount();
