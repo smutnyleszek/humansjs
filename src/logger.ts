@@ -10,12 +10,7 @@ class Logger {
       true
       // window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 30
     ) {
-      document.body.scrollIntoView({
-        behavior: "instant",
-        // browser is aligning to the bottom of element
-        block: "end",
-        inline: "nearest"
-      });
+      document.body.scrollIntoView(false);
     }
   }
 }
