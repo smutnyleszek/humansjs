@@ -1,4 +1,5 @@
 class Logger {
+  private static readonly safetyOffset: number = 30;
   public constructor(private autoScroll: boolean) {}
 
   public log(message: string): void {
@@ -7,9 +8,10 @@ class Logger {
     if (
       this.autoScroll &&
       // enable autoscroll only if scrolled to almost end of page
-      true
-      // window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 30
+      window.innerHeight + window.pageYOffset >=
+        document.body.offsetHeight - Logger.safetyOffset
     ) {
+      // false means to the bottom of the element
       document.body.scrollIntoView(false);
     }
   }
