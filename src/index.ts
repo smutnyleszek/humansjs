@@ -1,5 +1,5 @@
 import { logger } from "./logger";
-import { Human } from "./human";
+import { Humans } from "./humans";
 import { generator } from "./generator";
 
 declare global {
@@ -29,20 +29,15 @@ class HumanExistence {
     { type: "🌪", killPercentage: 5 }
   ];
 
-  private humans: Human[] = [];
+  private humans: Humans;
   private lifeIntervalId: number = 0;
   private currentYear: number = 0;
 
   public constructor() {
-    this.generateInitialPopulation();
-    this.startLife();
-  }
+    this.humans = new Humans(HumanExistence.initialPopulation);
+    logger.log(`Unknown force created ${this.humans.getTotalCount()} humans.`);
 
-  private generateInitialPopulation(): void {
-    for (let i = 0; i < HumanExistence.initialPopulation; i++) {
-      this.humans.push(new Human());
-    }
-    logger.log(`Unknown force created ${this.humans.length} humans.`);
+    this.startLife();
   }
 
   private startLife(): void {
@@ -54,14 +49,13 @@ class HumanExistence {
 
   private simulateOneYear(): void {
     this.bumpYear();
-    const initialCount = this.humans.length;
-    const bornCount = this.makeLove();
-    const buriedCount = this.buryDead();
+    const initialCount = this.humans.getTotalCount();
+    const bornCount = this.humans.makeLove();
+    const buriedCount = this.humans.buryDead();
     const appliedCatastrophe = this.applyRandomCatastrophe();
     const catastropheDeadCount = Math.abs(
-      this.humans.length + buriedCount - bornCount - initialCount
+      this.humans.getTotalCount() + buriedCount - bornCount - initialCount
     );
-
     this.logYear(
       bornCount,
       appliedCatastrophe,
@@ -87,17 +81,18 @@ class HumanExistence {
     messageParts.push(`🤱${bornCount}`.padEnd(6));
 
     // current population
+    const totalCount = this.humans.getTotalCount();
     if (deadCount > bornCount) {
-      messageParts.push(`${this.humans.length}↓`);
+      messageParts.push(`${totalCount}↓`);
     } else if (bornCount > deadCount) {
-      messageParts.push(`${this.humans.length}↑`);
+      messageParts.push(`${totalCount}↑`);
     } else {
-      messageParts.push(`${this.humans.length}–`);
+      messageParts.push(`${totalCount}–`);
     }
 
-    const babyCount = this.getBabyCount();
-    const fertileCount = this.getFertileCount();
-    const elderCount = this.getElderCount();
+    const babyCount = this.humans.getBabyCount();
+    const fertileCount = this.humans.getFertileCount();
+    const elderCount = this.humans.getElderCount();
     messageParts.push(`{👶${babyCount} 👩${fertileCount} 👵${elderCount}}`);
 
     // final message
@@ -106,49 +101,7 @@ class HumanExistence {
 
   private bumpYear(): void {
     this.currentYear++;
-    for (const human of this.humans) {
-      human.bumpAge();
-    }
-  }
-
-  private makeLove(): number {
-    let bornCount = 0;
-
-    if (this.humans.length <= 1) {
-      return bornCount;
-    } else {
-      for (let i = this.humans.length - 1; i >= 0; i--) {
-        const human = this.humans[i];
-        const mate = this.getRandomHuman();
-        if (this.isLovePossibleAndSuccessful(human, mate)) {
-          const baby = new Human(human, mate);
-          this.humans.push(baby);
-          bornCount++;
-        }
-      }
-    }
-    return bornCount;
-  }
-
-  private isLovePossibleAndSuccessful(human1: Human, human2: Human): boolean {
-    const loveChance = Human.calculateAverageVigor(human1, human2);
-    return (
-      human1.isFertile() &&
-      human2.isFertile() &&
-      loveChance >= generator.getRandomPercent() &&
-      Human.pregnancyChance >= generator.getRandomPercent()
-    );
-  }
-
-  private buryDead(): number {
-    let buriedCount = 0;
-    for (let i = this.humans.length - 1; i >= 0; i--) {
-      if (this.humans[i].isDead()) {
-        const deadBody = this.humans.splice(i, 1);
-        buriedCount++;
-      }
-    }
-    return buriedCount;
+    this.humans.growByOneYear();
   }
 
   // kills 20-80% of population (if happens)
@@ -156,13 +109,9 @@ class HumanExistence {
     // every catastrophe has 1% chance of happening
     if (HumanExistence.catastrophes.length >= generator.getRandomPercent()) {
       const catastrophe = this.getRandomCatastrophe();
-      const killCount = Math.floor(
-        this.humans.length * (catastrophe.killPercentage * 0.01)
+      this.humans.killNRandomHumans(
+        this.humans.getTotalCount() * (catastrophe.killPercentage * 0.01)
       );
-      // kill random X humans
-      for (let i = killCount; i >= 0; i--) {
-        this.humans.splice(Math.floor(Math.random() * this.humans.length), 1);
-      }
       return catastrophe;
     } else {
       return null;
@@ -170,10 +119,10 @@ class HumanExistence {
   }
 
   private checkGoals(): void {
-    if (this.humans.length === 0) {
+    if (this.humans.getTotalCount() === 0) {
       window.clearInterval(this.lifeIntervalId);
       logger.log("All humans died.");
-    } else if (this.humans.length >= HumanExistence.targetPopulation) {
+    } else if (this.humans.getTotalCount() >= HumanExistence.targetPopulation) {
       window.clearInterval(this.lifeIntervalId);
       logger.log(
         `Human population reached ${
@@ -181,40 +130,6 @@ class HumanExistence {
         }. They're safe now.`
       );
     }
-  }
-
-  private getBabyCount(): number {
-    let babyCount = 0;
-    for (const human of this.humans) {
-      if (human.isBaby()) {
-        babyCount++;
-      }
-    }
-    return babyCount;
-  }
-
-  private getElderCount(): number {
-    let elderCount = 0;
-    for (const human of this.humans) {
-      if (human.isElder()) {
-        elderCount++;
-      }
-    }
-    return elderCount;
-  }
-
-  private getFertileCount(): number {
-    let fertileCount = 0;
-    for (const human of this.humans) {
-      if (human.isFertile()) {
-        fertileCount++;
-      }
-    }
-    return fertileCount;
-  }
-
-  private getRandomHuman(): Human {
-    return this.humans[generator.getRandomNumber(0, this.humans.length - 1)];
   }
 
   private getRandomCatastrophe(): ICatastrophe {
