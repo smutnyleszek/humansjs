@@ -36,7 +36,7 @@ class HumanExistence {
     for (let i = 0; i < HumanExistence.initialPopulation; i++) {
       this.humans.push(new Human());
     }
-    logger.log(`God created ${this.humans.length} humans.`);
+    logger.log(`Unknown force created ${this.humans.length} humans.`);
   }
 
   private startLife(): void {
@@ -73,30 +73,29 @@ class HumanExistence {
 
     // births and deaths
     if (catastrophe === null) {
-      messageParts.push(`💀 -${deadCount}`);
+      messageParts.push(`💀${deadCount}`);
     } else {
-      messageParts.push(`${catastrophe.type} -${deadCount}`);
+      messageParts.push(`${catastrophe.type}${deadCount}`);
     }
 
-    messageParts.push(`🤰 +${bornCount}`);
+    messageParts.push(`🤱${bornCount}`);
 
     // current population
+    if (deadCount > bornCount) {
+      messageParts.push(`📉${this.humans.length}`);
+    } else if (bornCount > deadCount) {
+      messageParts.push(`📈${this.humans.length}`);
+    } else {
+      messageParts.push(`⚖️${this.humans.length}`);
+    }
+
     const babyCount = this.getBabyCount();
     const fertileCount = this.getFertileCount();
     const elderCount = this.getElderCount();
-
-    messageParts.push(`🌍 ${this.humans.length}`);
-
-    messageParts.push(`(👶 ${babyCount} 👩 ${fertileCount} 👵 ${elderCount})`);
-
-    if (deadCount > bornCount) {
-      messageParts.push("📉");
-    } else if (bornCount > deadCount) {
-      messageParts.push("📈");
-    }
+    messageParts.push(`{👶${babyCount} 👩${fertileCount} 👵${elderCount}}`);
 
     // final message
-    logger.log(`AD ${this.currentYear}: ${messageParts.join(" ")}`);
+    logger.log(`y${this.currentYear} ${messageParts.join(" ")}`);
   }
 
   private bumpYear(): void {
@@ -219,4 +218,6 @@ class HumanExistence {
   }
 }
 
-const humanExistence = new HumanExistence();
+window.onload = (): void => {
+  const humanExistence = new HumanExistence();
+};
