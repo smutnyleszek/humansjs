@@ -35,7 +35,7 @@ class HumanExistence {
 
   public constructor() {
     this.humans = new Humans(HumanExistence.initialPopulation);
-    logger.log(`Unknown force created ${this.humans.getTotalCount()} humans.`);
+    logger.log(`${this.humans.getTotalCount()} humans appeared.`);
 
     this.startLife();
   }
