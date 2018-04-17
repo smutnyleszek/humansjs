@@ -1,5 +1,5 @@
 class Logger {
-  private static readonly safetyOffset: number = 30;
+  private static readonly safetyOffset: number = 100;
   public constructor(private autoScroll: boolean) {}
 
   public log(message: string): void {
