@@ -109,7 +109,7 @@ class HumanExistence {
     // every catastrophe has 1% chance of happening
     if (HumanExistence.catastrophes.length >= generator.getRandomPercent()) {
       const catastrophe = this.getRandomCatastrophe();
-      this.humans.killNRandomHumans(
+      this.humans.killRandomHumans(
         this.humans.getTotalCount() * (catastrophe.killPercentage * 0.01)
       );
       return catastrophe;

@@ -48,10 +48,9 @@ export class Humans {
     }
   }
 
-  public killNRandomHumans(killCount: number): void {
+  public killRandomHumans(killCount: number): void {
     for (let i = killCount; i >= 0; i--) {
-      const randomIndex = Math.floor(Math.random() * this.population.length);
-      this.population.splice(randomIndex, 1);
+      this.killHumanByIndex(Math.floor(Math.random() * this.population.length));
     }
   }
 
@@ -59,7 +58,7 @@ export class Humans {
     let buriedCount = 0;
     for (let i = this.population.length - 1; i >= 0; i--) {
       if (this.population[i].isDead()) {
-        const deadBody = this.population.splice(i, 1);
+        this.killHumanByIndex(i);
         buriedCount++;
       }
     }
@@ -83,6 +82,10 @@ export class Humans {
       }
     }
     return bornCount;
+  }
+
+  private killHumanByIndex(index: number): void {
+    this.population.splice(index, 1);
   }
 
   private isLovePossibleAndSuccessful(human1: Human, human2: Human): boolean {

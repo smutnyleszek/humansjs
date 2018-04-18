@@ -4,10 +4,6 @@ export class Human {
   // https://menstrual-cycle-calculator.com/chance-pregnant-unprotected-sex/
   public static readonly pregnancyChance: number = 30; // %
 
-  public vigor: number;
-  public lifespan: number;
-  public age: number = 0;
-
   private static readonly baseVigor: number = 50; // %
   // https://en.wikipedia.org/wiki/List_of_the_verified_oldest_people
   private static readonly maxAge: number = 122;
@@ -15,6 +11,10 @@ export class Human {
   private static readonly reproductionAgeMin: number = 12;
   // https://en.wikipedia.org/wiki/Pregnancy_over_age_50
   private static readonly reproductionAgeMax: number = 72;
+
+  public vigor: number;
+  public lifespan: number;
+  public age: number = 0;
 
   public constructor(parent1?: Human, parent2?: Human) {
     let inheritedVigor = Human.baseVigor;
