@@ -50,19 +50,19 @@ export class Humans {
 
   public killRandomHumans(killCount: number): void {
     for (let i = killCount; i >= 0; i--) {
-      this.killHumanByIndex(Math.floor(Math.random() * this.population.length));
+      this.population.splice(
+        Math.floor(Math.random() * this.population.length),
+        1
+      );
     }
   }
 
   public buryDead(): number {
-    let buriedCount = 0;
-    for (let i = this.population.length - 1; i >= 0; i--) {
-      if (this.population[i].isDead()) {
-        this.killHumanByIndex(i);
-        buriedCount++;
-      }
-    }
-    return buriedCount;
+    const populationCountBefore = this.population.length;
+    this.population = this.population.filter((human: Human): boolean => {
+      return human.isAlive();
+    });
+    return populationCountBefore - this.population.length;
   }
 
   public makeLove(): number {
@@ -82,10 +82,6 @@ export class Humans {
       }
     }
     return bornCount;
-  }
-
-  private killHumanByIndex(index: number): void {
-    this.population.splice(index, 1);
   }
 
   private isLovePossibleAndSuccessful(human1: Human, human2: Human): boolean {

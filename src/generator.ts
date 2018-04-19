@@ -1,8 +1,8 @@
-// I tried using window.crypto, but it was much slower than a simpler Math.random
 class Generator {
   public getRandomNumber(min: number, max: number): number {
     const minCeil = Math.ceil(min);
     const maxFloor = Math.floor(max);
+    // window.crypto is much slower than a simpler Math.random
     return Math.floor(Math.random() * (maxFloor - minCeil + 1)) + minCeil;
   }
 
