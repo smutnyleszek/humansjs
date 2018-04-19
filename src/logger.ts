@@ -6,6 +6,7 @@ class Logger {
     document.body.appendChild(document.createTextNode(`${message}\n`));
 
     if (
+      document.body.scrollIntoView &&
       this.autoScroll &&
       // enable autoscroll only if scrolled to almost end of page
       window.innerHeight + window.pageYOffset >=
