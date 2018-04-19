@@ -15,7 +15,7 @@ export class Humans {
   public getBabyCount(): number {
     let babyCount = 0;
     for (const human of this.population) {
-      if (human.isBaby()) {
+      if (human.ageGroup === Human.ageGroups.Baby) {
         babyCount++;
       }
     }
@@ -25,21 +25,21 @@ export class Humans {
   public getElderCount(): number {
     let elderCount = 0;
     for (const human of this.population) {
-      if (human.isElder()) {
+      if (human.ageGroup === Human.ageGroups.Elder) {
         elderCount++;
       }
     }
     return elderCount;
   }
 
-  public getFertileCount(): number {
-    let fertileCount = 0;
+  public getAdultCount(): number {
+    let adultCount = 0;
     for (const human of this.population) {
-      if (human.isFertile()) {
-        fertileCount++;
+      if (human.ageGroup === Human.ageGroups.Adult) {
+        adultCount++;
       }
     }
-    return fertileCount;
+    return adultCount;
   }
 
   public growByOneYear(): void {
@@ -59,8 +59,9 @@ export class Humans {
 
   public buryDead(): number {
     const populationCountBefore = this.population.length;
+    // keep only alive people in population
     this.population = this.population.filter((human: Human): boolean => {
-      return human.isAlive();
+      return human.isAlive;
     });
     return populationCountBefore - this.population.length;
   }
@@ -87,8 +88,8 @@ export class Humans {
   private isLovePossibleAndSuccessful(human1: Human, human2: Human): boolean {
     const loveChance = Human.calculateAverageVigor(human1, human2);
     return (
-      human1.isFertile() &&
-      human2.isFertile() &&
+      human1.ageGroup === Human.ageGroups.Adult &&
+      human2.ageGroup === Human.ageGroups.Adult &&
       loveChance >= generator.getRandomPercent() &&
       Human.pregnancyChance >= generator.getRandomPercent()
     );

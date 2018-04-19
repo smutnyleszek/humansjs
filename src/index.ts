@@ -91,9 +91,9 @@ class HumanExistence {
     }
 
     const babyCount = this.humans.getBabyCount();
-    const fertileCount = this.humans.getFertileCount();
+    const adultCount = this.humans.getAdultCount();
     const elderCount = this.humans.getElderCount();
-    messageParts.push(`{👶${babyCount} 👩${fertileCount} 👵${elderCount}}`);
+    messageParts.push(`{👶${babyCount} 👩${adultCount} 👵${elderCount}}`);
 
     // final message
     logger.log(`y${this.currentYear} ${messageParts.join(" ")}`);

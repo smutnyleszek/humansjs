@@ -1,70 +1,72 @@
 import { generator } from "./generator";
 
+enum HumanAgeGroup {
+  Baby = 0,
+  Adult = 1,
+  Elder = 2
+}
+
 export class Human {
+  public static readonly ageGroups = HumanAgeGroup;
   // https://menstrual-cycle-calculator.com/chance-pregnant-unprotected-sex/
   public static readonly pregnancyChance: number = 30; // %
+  // https://en.wikipedia.org/wiki/List_of_the_verified_oldest_people
+  public static readonly maxAge: number = 122;
+  // https://en.wikipedia.org/wiki/Age_and_female_fertility
+  public static readonly pubertyAge: number = 12;
+  // https://en.wikipedia.org/wiki/Pregnancy_over_age_50
+  public static readonly menopauseAge: number = 72;
 
   private static readonly baseVigor: number = 50; // %
-  // https://en.wikipedia.org/wiki/List_of_the_verified_oldest_people
-  private static readonly maxAge: number = 122;
-  // https://en.wikipedia.org/wiki/Age_and_female_fertility
-  private static readonly reproductionAgeMin: number = 12;
-  // https://en.wikipedia.org/wiki/Pregnancy_over_age_50
-  private static readonly reproductionAgeMax: number = 72;
 
-  public vigor: number;
-  public lifespan: number;
+  public vigor: number = Human.baseVigor;
+  public lifespan: number = 1;
   public age: number = 0;
+  public ageGroup: HumanAgeGroup = Human.ageGroups.Baby;
+  public isAlive: boolean = true;
 
   public constructor(parent1?: Human, parent2?: Human) {
-    let inheritedVigor = Human.baseVigor;
-    if (parent1 instanceof Human && parent2 instanceof Human) {
-      inheritedVigor = Human.calculateAverageVigor(parent1, parent2);
-    }
-
-    this.vigor = this.generateVigor(inheritedVigor);
-    this.lifespan = this.generateLifespan();
+    Human.generateVigor(this, parent1, parent2);
+    Human.generateLifespan(this);
   }
 
   public bumpAge(): void {
     this.age++;
-  }
-
-  public isDead(): boolean {
-    return this.age >= this.lifespan;
-  }
-
-  public isBaby(): boolean {
-    return this.age < Human.reproductionAgeMin;
-  }
-
-  public isElder(): boolean {
-    return this.age > Human.reproductionAgeMax;
-  }
-
-  public isFertile(): boolean {
-    return !this.isBaby() && !this.isElder();
-  }
-
-  // returns non-negative number
-  private generateVigor(inheritedVigor: number): number {
-    const geneticVigor = (inheritedVigor + Human.baseVigor) / 2;
-    const mutation = generator.getRandomNumber(-10, 10);
-    const mutatedVigor = Math.round(geneticVigor + mutation);
-    if (mutatedVigor >= 0) {
-      return mutatedVigor;
+    this.isAlive = this.age < this.lifespan;
+    if (this.age < Human.pubertyAge) {
+      this.ageGroup = Human.ageGroups.Baby;
+    } else if (this.age >= Human.menopauseAge) {
+      this.ageGroup = Human.ageGroups.Elder;
     } else {
-      return 0;
+      this.ageGroup = Human.ageGroups.Adult;
     }
-  }
-
-  private generateLifespan(): number {
-    return Math.floor(
-      generator.getRandomNumber(0, Human.maxAge) * (this.vigor / 100)
-    );
   }
 
   public static calculateAverageVigor(human1: Human, human2: Human): number {
     return (human1.vigor + human2.vigor) / 2;
+  }
+
+  // sets non-negative number
+  private static generateVigor(
+    human: Human,
+    parent1?: Human,
+    parent2?: Human
+  ): void {
+    let inheritedVigor = Human.baseVigor;
+    if (parent1 instanceof Human && parent2 instanceof Human) {
+      inheritedVigor = Human.calculateAverageVigor(parent1, parent2);
+    }
+    const geneticVigor = (inheritedVigor + Human.baseVigor) / 2;
+    const mutation = generator.getRandomNumber(-10, 10);
+    const mutatedVigor = Math.round(geneticVigor + mutation);
+    human.vigor = Math.max(0, mutatedVigor);
+  }
+
+  private static generateLifespan(human: Human): void {
+    human.lifespan = Math.floor(
+      generator.getRandomNumber(0, Human.maxAge) * (human.vigor / 100)
+    );
+    // check if not born dead
+    human.isAlive = human.age < human.lifespan;
   }
 }
