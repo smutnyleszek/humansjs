@@ -37,4 +37,23 @@ describe("Human", () => {
     person.bumpAge();
     expect(person.ageGroup).toBe(Human.ageGroups.Elder);
   });
+
+  it("should be influenced by parents vitalitys", () => {
+    const godlyParent = new Human();
+    godlyParent.vitality = 100;
+
+    const poorParent = new Human();
+    poorParent.vitality = 10;
+
+    for (let i = 0; i < 1000; i++) {
+      const regular = new Human();
+      expect(regular.vitality >= 23 && regular.vitality <= 43).toBeTruthy();
+
+      const demigod = new Human(godlyParent, godlyParent);
+      expect(demigod.vitality >= 90 && demigod.vitality <= 110).toBeTruthy();
+
+      const poor = new Human(poorParent, poorParent);
+      expect(poor.vitality >= 0 && poor.vitality <= 20).toBeTruthy();
+    }
+  });
 });

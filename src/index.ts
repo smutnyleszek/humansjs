@@ -90,10 +90,14 @@ class HumanExistence {
       messageParts.push(`${totalCount}–`);
     }
 
-    const babyCount = this.humans.getBabyCount();
-    const adultCount = this.humans.getAdultCount();
-    const elderCount = this.humans.getElderCount();
-    messageParts.push(`{👶${babyCount} 👩${adultCount} 👵${elderCount}}`);
+    const groupsCount = this.humans.getAgeGroupsCount();
+    messageParts.push(
+      `{👶${groupsCount.Baby} 👩${groupsCount.Adult} 👵${groupsCount.Elder}}`
+    );
+
+    const averageVitality = this.humans.getAverageVitality();
+
+    messageParts.push(`💓${averageVitality}`);
 
     // final message
     logger.log(`y${this.currentYear} ${messageParts.join(" ")}`);

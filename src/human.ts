@@ -16,17 +16,18 @@ export class Human {
   public static readonly pubertyAge: number = 12;
   // https://en.wikipedia.org/wiki/Pregnancy_over_age_50
   public static readonly menopauseAge: number = 72;
+  // https://en.wikipedia.org/wiki/Life_expectancy
+  private static readonly baseVitality: number = 33; // %
 
-  private static readonly baseVigor: number = 50; // %
-
-  public vigor: number = Human.baseVigor;
+  public vitality: number = Human.baseVitality;
   public lifespan: number = 1;
   public age: number = 0;
   public ageGroup: HumanAgeGroup = Human.ageGroups.Baby;
   public isAlive: boolean = true;
 
   public constructor(parent1?: Human, parent2?: Human) {
-    Human.generateVigor(this, parent1, parent2);
+    Human.generateVitality(this, parent1, parent2);
+    // lifespan uses vitality, so should be called last
     Human.generateLifespan(this);
   }
 
@@ -42,29 +43,28 @@ export class Human {
     }
   }
 
-  public static calculateAverageVigor(human1: Human, human2: Human): number {
-    return (human1.vigor + human2.vigor) / 2;
+  public static calculateAverageVitality(human1: Human, human2: Human): number {
+    return (human1.vitality + human2.vitality) / 2;
   }
 
   // sets non-negative number
-  private static generateVigor(
+  private static generateVitality(
     human: Human,
     parent1?: Human,
     parent2?: Human
   ): void {
-    let inheritedVigor = Human.baseVigor;
+    let geneticVitality = Human.baseVitality;
     if (parent1 instanceof Human && parent2 instanceof Human) {
-      inheritedVigor = Human.calculateAverageVigor(parent1, parent2);
+      geneticVitality = Human.calculateAverageVitality(parent1, parent2);
     }
-    const geneticVigor = (inheritedVigor + Human.baseVigor) / 2;
     const mutation = generator.getRandomNumber(-10, 10);
-    const mutatedVigor = Math.round(geneticVigor + mutation);
-    human.vigor = Math.max(0, mutatedVigor);
+    const mutatedVitality = Math.round(geneticVitality + mutation);
+    human.vitality = Math.max(0, mutatedVitality);
   }
 
   private static generateLifespan(human: Human): void {
     human.lifespan = Math.floor(
-      generator.getRandomNumber(0, Human.maxAge) * (human.vigor / 100)
+      generator.getRandomNumber(0, Human.maxAge) * (human.vitality / 100)
     );
     // check if not born dead
     human.isAlive = human.age < human.lifespan;

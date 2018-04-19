@@ -1,6 +1,12 @@
 import { Human } from "./human";
 import { generator } from "./generator";
 
+interface IAgeGroupsCount {
+  Baby: number;
+  Adult: number;
+  Elder: number;
+}
+
 export class Humans {
   private population: Human[] = [];
 
@@ -12,34 +18,30 @@ export class Humans {
     return this.population.length;
   }
 
-  public getBabyCount(): number {
-    let babyCount = 0;
+  public getAgeGroupsCount(): IAgeGroupsCount {
+    const ageGroupsCount = {
+      Baby: 0,
+      Adult: 0,
+      Elder: 0
+    };
     for (const human of this.population) {
       if (human.ageGroup === Human.ageGroups.Baby) {
-        babyCount++;
+        ageGroupsCount.Baby++;
+      } else if (human.ageGroup === Human.ageGroups.Adult) {
+        ageGroupsCount.Adult++;
+      } else if (human.ageGroup === Human.ageGroups.Elder) {
+        ageGroupsCount.Elder++;
       }
     }
-    return babyCount;
+    return ageGroupsCount;
   }
 
-  public getElderCount(): number {
-    let elderCount = 0;
+  public getAverageVitality(): number {
+    let totalVitalitySum = 0;
     for (const human of this.population) {
-      if (human.ageGroup === Human.ageGroups.Elder) {
-        elderCount++;
-      }
+      totalVitalitySum += human.vitality;
     }
-    return elderCount;
-  }
-
-  public getAdultCount(): number {
-    let adultCount = 0;
-    for (const human of this.population) {
-      if (human.ageGroup === Human.ageGroups.Adult) {
-        adultCount++;
-      }
-    }
-    return adultCount;
+    return Math.round(totalVitalitySum / this.population.length);
   }
 
   public growByOneYear(): void {
@@ -75,7 +77,7 @@ export class Humans {
       for (let i = this.population.length - 1; i >= 0; i--) {
         const human = this.population[i];
         const mate = this.getRandomHuman();
-        if (this.isLovePossibleAndSuccessful(human, mate)) {
+        if (this.isLoveFruitful(human, mate)) {
           const baby = new Human(human, mate);
           this.population.push(baby);
           bornCount++;
@@ -85,8 +87,8 @@ export class Humans {
     return bornCount;
   }
 
-  private isLovePossibleAndSuccessful(human1: Human, human2: Human): boolean {
-    const loveChance = Human.calculateAverageVigor(human1, human2);
+  private isLoveFruitful(human1: Human, human2: Human): boolean {
+    const loveChance = Human.calculateAverageVitality(human1, human2);
     return (
       human1.ageGroup === Human.ageGroups.Adult &&
       human2.ageGroup === Human.ageGroups.Adult &&
