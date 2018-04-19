@@ -2,9 +2,9 @@ import { Human } from "./human";
 import { generator } from "./generator";
 
 interface IAgeGroupsCount {
-  Baby: number;
-  Adult: number;
-  Elder: number;
+  baby: number;
+  adult: number;
+  elder: number;
 }
 
 export class Humans {
@@ -20,17 +20,17 @@ export class Humans {
 
   public getAgeGroupsCount(): IAgeGroupsCount {
     const ageGroupsCount = {
-      Baby: 0,
-      Adult: 0,
-      Elder: 0
+      baby: 0,
+      adult: 0,
+      elder: 0
     };
     for (const human of this.population) {
       if (human.ageGroup === Human.ageGroups.Baby) {
-        ageGroupsCount.Baby++;
+        ageGroupsCount.baby++;
       } else if (human.ageGroup === Human.ageGroups.Adult) {
-        ageGroupsCount.Adult++;
+        ageGroupsCount.adult++;
       } else if (human.ageGroup === Human.ageGroups.Elder) {
-        ageGroupsCount.Elder++;
+        ageGroupsCount.elder++;
       }
     }
     return ageGroupsCount;

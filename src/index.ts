@@ -92,7 +92,7 @@ class HumanExistence {
 
     const groupsCount = this.humans.getAgeGroupsCount();
     messageParts.push(
-      `{👶${groupsCount.Baby} 👩${groupsCount.Adult} 👵${groupsCount.Elder}}`
+      `{👶${groupsCount.baby} 👩${groupsCount.adult} 👵${groupsCount.elder}}`
     );
 
     const averageVitality = this.humans.getAverageVitality();
