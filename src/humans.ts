@@ -56,10 +56,10 @@ export class Humans {
 
   public killRandomHumans(killCount: number): void {
     for (let i = killCount; i >= 0; i--) {
-      this.population.splice(
-        Math.floor(Math.random() * this.population.length),
-        1
-      );
+      const populationLength = this.population.length;
+      const randomIndex = Math.floor(Math.random() * populationLength);
+      this.population[randomIndex] = this.population[populationLength - 1];
+      this.population.pop();
     }
   }
 

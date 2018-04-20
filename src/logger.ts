@@ -3,7 +3,8 @@ class Logger {
   public constructor(private autoScroll: boolean) {}
 
   public log(message: string): void {
-    document.body.appendChild(document.createTextNode(`${message}\n`));
+    // insertAdjacentHTML seems to be a bit faster than appendChild
+    document.body.insertAdjacentHTML("beforeend", `${message}\n`);
 
     if (
       document.body.scrollIntoView &&
