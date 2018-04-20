@@ -43,17 +43,17 @@ describe("Human", () => {
     godlyParent.vitality = 100;
 
     const poorParent = new Human();
-    poorParent.vitality = 10;
+    poorParent.vitality = 1;
 
     for (let i = 0; i < 1000; i++) {
       const regular = new Human();
-      expect(regular.vitality >= 23 && regular.vitality <= 43).toBeTruthy();
+      expect(regular.vitality >= 27 && regular.vitality <= 67).toBeTruthy();
 
       const demigod = new Human(godlyParent, godlyParent);
-      expect(demigod.vitality >= 90 && demigod.vitality <= 110).toBeTruthy();
+      expect(demigod.vitality >= 54 && demigod.vitality <= 94).toBeTruthy();
 
       const poor = new Human(poorParent, poorParent);
-      expect(poor.vitality >= 0 && poor.vitality <= 20).toBeTruthy();
+      expect(poor.vitality >= 4 && poor.vitality <= 44).toBeTruthy();
     }
   });
 });

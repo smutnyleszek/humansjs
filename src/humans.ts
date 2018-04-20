@@ -36,12 +36,16 @@ export class Humans {
     return ageGroupsCount;
   }
 
-  public getAverageVitality(): number {
-    let totalVitalitySum = 0;
-    for (const human of this.population) {
-      totalVitalitySum += human.vitality;
+  public getTotalAverageVitality(): number {
+    if (this.population.length === 0) {
+      return 0;
+    } else {
+      let totalVitalitySum = 0;
+      for (const human of this.population) {
+        totalVitalitySum += human.vitality;
+      }
+      return Math.round(totalVitalitySum / this.population.length);
     }
-    return Math.round(totalVitalitySum / this.population.length);
   }
 
   public growByOneYear(): void {
@@ -88,13 +92,18 @@ export class Humans {
   }
 
   private isLoveFruitful(human1: Human, human2: Human): boolean {
-    const loveChance = Human.calculateAverageVitality(human1, human2);
-    return (
+    if (
       human1.ageGroup === Human.ageGroups.Adult &&
-      human2.ageGroup === Human.ageGroups.Adult &&
-      loveChance >= generator.getRandomPercent() &&
-      Human.pregnancyChance >= generator.getRandomPercent()
-    );
+      human2.ageGroup === Human.ageGroups.Adult
+    ) {
+      const loveChance = Human.calculateLoveChance(human1, human2);
+      return (
+        loveChance >= generator.getRandomPercent() &&
+        Human.pregnancyChance >= generator.getRandomPercent()
+      );
+    } else {
+      return false;
+    }
   }
 
   private generateInitialPopulation(initialPopulation: number): void {

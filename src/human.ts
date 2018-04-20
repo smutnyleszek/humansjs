@@ -16,8 +16,9 @@ export class Human {
   public static readonly pubertyAge: number = 12;
   // https://en.wikipedia.org/wiki/Pregnancy_over_age_50
   public static readonly menopauseAge: number = 72;
-  // https://en.wikipedia.org/wiki/Life_expectancy
-  private static readonly baseVitality: number = 33; // %
+  // we base on Classical Rome period: https://en.wikipedia.org/wiki/Life_expectancy
+  private static readonly baseVitality: number = 47; // %
+  private static readonly similarityLoveFactor: number = 10; // %
 
   public vitality: number = Human.baseVitality;
   public lifespan: number = 1;
@@ -43,7 +44,21 @@ export class Human {
     }
   }
 
-  public static calculateAverageVitality(human1: Human, human2: Human): number {
+  public static calculateLoveChance(human1: Human, human2: Human): number {
+    const averageVitality = Human.calculateAverageVitality(human1, human2);
+    if (
+      Math.abs(human1.vitality - human2.vitality) >= Human.similarityLoveFactor
+    ) {
+      return averageVitality - Human.similarityLoveFactor;
+    } else {
+      return averageVitality + Human.similarityLoveFactor;
+    }
+  }
+
+  private static calculateAverageVitality(
+    human1: Human,
+    human2: Human
+  ): number {
     return (human1.vitality + human2.vitality) / 2;
   }
 
@@ -55,11 +70,11 @@ export class Human {
   ): void {
     let geneticVitality = Human.baseVitality;
     if (parent1 instanceof Human && parent2 instanceof Human) {
-      geneticVitality = Human.calculateAverageVitality(parent1, parent2);
+      const parentsVitality = Human.calculateAverageVitality(parent1, parent2);
+      geneticVitality = (Human.baseVitality + parentsVitality) / 2;
     }
-    const mutation = generator.getRandomNumber(-10, 10);
-    const mutatedVitality = Math.round(geneticVitality + mutation);
-    human.vitality = Math.max(0, mutatedVitality);
+    const mutation = generator.getRandomNumber(-20, 20);
+    human.vitality = Math.max(0, Math.round(geneticVitality + mutation));
   }
 
   private static generateLifespan(human: Human): void {
