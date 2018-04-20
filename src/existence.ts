@@ -17,7 +17,7 @@ export class Existence {
   // https://en.wikipedia.org/wiki/Minimum_viable_population
   private static readonly initialPopulation: number = 4129;
   private static readonly targetPopulation: number = 1000000;
-  private static readonly yearTime: number = 0.2 * 1000; // seconds
+  private static readonly yearTime: number = 0.1 * 1000; // seconds
 
   private static readonly catastrophes: ICatastrophe[] = [
     { type: "🤢", killPercentage: 40 },
