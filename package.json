@@ -4,12 +4,12 @@
   "description": "Zero-player human existence simulator",
   "author": {
     "name": "Leszek Pietrzak",
-    "email": "smutnyleszek@gmail.com"
+    "email": "leszek@magicznyleszek.xyz"
   },
   "private": false,
-  "homepage": "https://github.com/smutnyleszek/humansjs",
-  "repository": "git+https://github.com/smutnyleszek/humansjs.git",
-  "bugs": "https://github.com/smutnyleszek/humansjs/issues",
+  "homepage": "https://github.com/magicznyleszek/humansjs",
+  "repository": "git+https://github.com/magicznyleszek/humansjs.git",
+  "bugs": "https://github.com/magicznyleszek/humansjs/issues",
   "license": "CC0-1.0",
   "scripts": {
     "test": "jest",
