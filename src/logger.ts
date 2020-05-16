@@ -2,6 +2,7 @@ class Logger {
   private static readonly safetyOffset: number = 100;
   public constructor(private autoScroll: boolean) {}
 
+  // adds given message to the body, ending with newline
   public log(message: string): void {
     // insertAdjacentHTML seems to be a bit faster than appendChild
     document.body.insertAdjacentHTML("beforeend", `${message}\n`);

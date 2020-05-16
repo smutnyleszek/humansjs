@@ -106,7 +106,7 @@ export class Existence {
     this.humans.growByOneYear();
   }
 
-  // kills 20-80% of population (if happens)
+  // kills % of population (if happens)
   private applyRandomCatastrophe(): ICatastrophe | null {
     // every catastrophe has 1% chance of happening
     if (Existence.catastrophes.length >= generator.getRandomPercent()) {
