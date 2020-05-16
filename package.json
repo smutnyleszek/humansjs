@@ -19,13 +19,13 @@
     "copy-static-files": "cp CNAME favicon.png humans.txt LICENSE manifest.json favicon.ico favicon.png docs"
   },
   "devDependencies": {
-    "@types/jest": "^22.1.1",
-    "@types/lodash": "^4.14.101",
+    "@types/jest": "^25.2.2",
+    "@types/lodash": "^4.14.151",
     "favicon-emoji": "^2.3.0",
-    "jest": "^22.2.0",
-    "parcel-bundler": "^1.4.1",
-    "ts-jest": "^22.0.3",
-    "typescript": "^2.7.1"
+    "jest": "^26.0.1",
+    "parcel-bundler": "^1.12.4",
+    "ts-jest": "^26.0.0",
+    "typescript": "^3.9.2"
   },
   "jest": {
     "transform": {
