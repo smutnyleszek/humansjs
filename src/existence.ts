@@ -33,12 +33,13 @@ export class Existence {
     { type: "🤢", killMin: 30, killMax: 60 },
     { type: "❄️", killMin: 20, killMax: 40 },
     // https://en.wikipedia.org/wiki/List_of_natural_disasters_by_death_toll
-    { type: "🏜", killMin: 7, killMax: 14 },
+    { type: "🏜", killMin: 7, killMax: 28 },
+    { type: "🌊", killMin: 2, killMax: 10 },
+    { type: "🔥", killMin: 8, killMax: 8 },
+    { type: "🌋", killMin: 1, killMax: 5 },
+    { type: "🌪", killMin: 4, killMax: 4 },
     // https://en.m.wikipedia.org/wiki/World_War_II_casualties
-    { type: "⚔️", killMin: 4, killMax: 12 },
-    { type: "🌊", killMin: 4, killMax: 8 },
-    { type: "🌋", killMin: 3, killMax: 5 },
-    { type: "🌪", killMin: 2, killMax: 4 }
+    { type: "⚔️", killMin: 2, killMax: 3 }
   ];
 
   private humans: Humans;
