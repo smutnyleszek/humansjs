@@ -4,7 +4,6 @@ import { generator } from "./generator";
 interface IAgeGroupsCount {
   baby: number;
   adult: number;
-  elder: number;
 }
 
 export class Humans {
@@ -21,32 +20,16 @@ export class Humans {
   public getAgeGroupsCount(): IAgeGroupsCount {
     const ageGroupsCount = {
       baby: 0,
-      adult: 0,
-      elder: 0
+      adult: 0
     };
     for (const human of this.population) {
-      if (human.ageGroup === Human.ageGroups.Baby) {
-        ageGroupsCount.baby++;
-      } else if (human.ageGroup === Human.ageGroups.Adult) {
+      if (human.isAdult) {
         ageGroupsCount.adult++;
-      } else if (human.ageGroup === Human.ageGroups.Elder) {
-        ageGroupsCount.elder++;
+      } else {
+        ageGroupsCount.baby++;
       }
     }
     return ageGroupsCount;
-  }
-
-  // returns an average vitality number of all humans
-  public getTotalAverageVitality(): number {
-    if (this.population.length === 0) {
-      return 0;
-    } else {
-      let totalVitalitySum = 0;
-      for (const human of this.population) {
-        totalVitalitySum += human.vitality;
-      }
-      return Math.round(totalVitalitySum / this.population.length);
-    }
   }
 
   public growByOneYear(): void {
@@ -113,18 +96,7 @@ export class Humans {
 
   // checks if two humans are able to love each other and if are able to get pregnant
   private isLoveFruitful(human1: Human, human2: Human): boolean {
-    if (
-      human1.ageGroup === Human.ageGroups.Adult &&
-      human2.ageGroup === Human.ageGroups.Adult
-    ) {
-      const loveChance = Human.calculateLoveChance(human1, human2);
-      return (
-        loveChance >= generator.getRandomPercent() &&
-        Human.pregnancyChance >= generator.getRandomPercent()
-      );
-    } else {
-      return false;
-    }
+    return Human.getBabyChance(human1, human2) > generator.getRandomPercent();
   }
 
   private generateInitialPopulation(initialPopulation: number): void {
