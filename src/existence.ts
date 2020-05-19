@@ -27,19 +27,26 @@ export class Existence {
   private static readonly yearTime: number = 0.1 * 1000; // seconds
 
   private static readonly catastrophes: ICatastrophe[] = [
-    // https://en.wikipedia.org/wiki/Chicxulub_crater
+    // meteor - https://en.wikipedia.org/wiki/Chicxulub_crater
     { type: "☄️", killMin: 0, killMax: 75 },
-    // https://en.wikipedia.org/wiki/Black_Death
+    // plague - https://en.wikipedia.org/wiki/Black_Death
     { type: "🤢", killMin: 30, killMax: 60 },
-    { type: "❄️", killMin: 20, killMax: 40 },
-    // https://en.wikipedia.org/wiki/List_of_natural_disasters_by_death_toll
-    { type: "🏜", killMin: 7, killMax: 28 },
-    { type: "🌊", killMin: 2, killMax: 10 },
-    { type: "🔥", killMin: 8, killMax: 8 },
+    // famine - https://en.wikipedia.org/wiki/List_of_natural_disasters_by_death_toll
+    { type: "🏜", killMin: 10, killMax: 28 },
+    // ice age
+    { type: "❄️", killMin: 16, killMax: 18 },
+    // flood
+    { type: "🌊", killMin: 1, killMax: 10 },
+    // wildfire
+    { type: "🔥", killMin: 7, killMax: 8 },
+    // volcano eruption
     { type: "🌋", killMin: 1, killMax: 5 },
+    // cyclone
     { type: "🌪", killMin: 4, killMax: 4 },
-    // https://en.m.wikipedia.org/wiki/World_War_II_casualties
-    { type: "⚔️", killMin: 2, killMax: 3 }
+    // war - https://en.m.wikipedia.org/wiki/World_War_II_casualties
+    { type: "⚔️", killMin: 2, killMax: 3 },
+    // religion - https://rationalwiki.org/wiki/Death_toll_of_Christianity
+    { type: "⛪", killMin: 1, killMax: 2 }
   ];
 
   private humans: Humans;
