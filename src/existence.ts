@@ -106,12 +106,12 @@ export class Existence {
     const messageParts = [`y${this.currentYear}`];
 
     if (catastrophe === null) {
-      messageParts.push(`⚰️${deadCount}`);
+      messageParts.push(`✝${deadCount}`);
     } else {
       messageParts.push(`${catastrophe.type}${deadCount}`);
     }
 
-    messageParts.push(`🤱${bornCount}`);
+    messageParts.push(`❋${bornCount}`);
 
     // current population
     const totalCount = this.humans.getTotalCount();
