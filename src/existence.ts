@@ -23,7 +23,6 @@ export enum PopulationStatus {
 export class Existence {
   // https://en.wikipedia.org/wiki/Minimum_viable_population
   private static readonly initialPopulation: number = 4169;
-  private static readonly targetPopulation: number = 1000000;
   private static readonly yearTime: number = 0.1 * 1000; // seconds
 
   private static readonly catastrophes: ICatastrophe[] = [
@@ -34,27 +33,29 @@ export class Existence {
     // famine - https://en.wikipedia.org/wiki/List_of_natural_disasters_by_death_toll
     { type: "🏜", killMin: 10, killMax: 28 },
     // ice age
-    { type: "❄️", killMin: 16, killMax: 18 },
+    { type: "❄️", killMin: 16, killMax: 20 },
     // flood
-    { type: "🌊", killMin: 1, killMax: 10 },
+    { type: "🌊", killMin: 3, killMax: 13 },
     // wildfire
-    { type: "🔥", killMin: 7, killMax: 8 },
+    { type: "🔥", killMin: 11, killMax: 12 },
     // volcano eruption
-    { type: "🌋", killMin: 1, killMax: 5 },
+    { type: "🌋", killMin: 1, killMax: 9 },
     // cyclone
-    { type: "🌪", killMin: 4, killMax: 4 },
+    { type: "🌪", killMin: 6, killMax: 6 },
     // war - https://en.m.wikipedia.org/wiki/World_War_II_casualties
     { type: "⚔️", killMin: 2, killMax: 3 },
     // religion - https://rationalwiki.org/wiki/Death_toll_of_Christianity
     { type: "⛪", killMin: 1, killMax: 2 }
   ];
 
+  private targetPopulation: number;
   private humans: Humans;
   private lifeIntervalId: number = 0;
   private currentYear: number = 0;
   private isLoggingEnabled: boolean = false;
 
-  public constructor(enableLogging: boolean) {
+  public constructor(targetPopulation: number, enableLogging: boolean) {
+    this.targetPopulation = targetPopulation;
     this.humans = new Humans(Existence.initialPopulation);
     this.isLoggingEnabled = enableLogging;
     if (this.isLoggingEnabled) {
@@ -97,7 +98,7 @@ export class Existence {
   public getPopulationStatus(): PopulationStatus {
     if (this.humans.getTotalCount() === 0) {
       return PopulationStatus.Extinct;
-    } else if (this.humans.getTotalCount() >= Existence.targetPopulation) {
+    } else if (this.humans.getTotalCount() >= this.targetPopulation) {
       return PopulationStatus.Safe;
     } else {
       return PopulationStatus.Struggling;
@@ -165,7 +166,7 @@ export class Existence {
     } else if (status === PopulationStatus.Safe) {
       window.clearInterval(this.lifeIntervalId);
       if (this.isLoggingEnabled) {
-        logger.log(`Human population reached ${Existence.targetPopulation}. They're safe now.`);
+        logger.log(`Human population reached ${this.targetPopulation}. They're safe now.`);
       }
     }
   }
