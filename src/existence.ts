@@ -10,32 +10,57 @@ declare global {
 
 interface ICatastrophe {
   type: string;
-  killPercentage: number;
+  killMin: number;
+  killMax: number;
+}
+
+export enum PopulationStatus {
+  Extinct = -1,
+  Struggling = 0,
+  Safe = 1
 }
 
 export class Existence {
   // https://en.wikipedia.org/wiki/Minimum_viable_population
-  private static readonly initialPopulation: number = 4129;
-  private static readonly targetPopulation: number = 1000000;
+  private static readonly initialPopulation: number = 4169;
   private static readonly yearTime: number = 0.1 * 1000; // seconds
 
   private static readonly catastrophes: ICatastrophe[] = [
-    { type: "🤢", killPercentage: 40 },
-    { type: "☄️", killPercentage: 35 },
-    { type: "🌋", killPercentage: 30 },
-    { type: "🌊", killPercentage: 25 },
-    { type: "❄️", killPercentage: 20 },
-    { type: "🏜", killPercentage: 10 },
-    { type: "🌪", killPercentage: 5 }
+    // meteor - https://en.wikipedia.org/wiki/Chicxulub_crater
+    { type: "☄️", killMin: 0, killMax: 75 },
+    // plague - https://en.wikipedia.org/wiki/Black_Death
+    { type: "🤢", killMin: 30, killMax: 60 },
+    // famine - https://en.wikipedia.org/wiki/List_of_natural_disasters_by_death_toll
+    { type: "🏜", killMin: 10, killMax: 28 },
+    // ice age
+    { type: "❄️", killMin: 16, killMax: 20 },
+    // flood
+    { type: "🌊", killMin: 3, killMax: 13 },
+    // wildfire
+    { type: "🔥", killMin: 11, killMax: 12 },
+    // volcano eruption
+    { type: "🌋", killMin: 1, killMax: 9 },
+    // cyclone
+    { type: "🌪", killMin: 6, killMax: 6 },
+    // war - https://en.m.wikipedia.org/wiki/World_War_II_casualties
+    { type: "⚔️", killMin: 2, killMax: 3 },
+    // religion - https://rationalwiki.org/wiki/Death_toll_of_Christianity
+    { type: "⛪", killMin: 1, killMax: 2 }
   ];
 
+  private targetPopulation: number;
   private humans: Humans;
   private lifeIntervalId: number = 0;
   private currentYear: number = 0;
+  private isLoggingEnabled: boolean = false;
 
-  public constructor() {
+  public constructor(targetPopulation: number, enableLogging: boolean) {
+    this.targetPopulation = targetPopulation;
     this.humans = new Humans(Existence.initialPopulation);
-    logger.log(`${this.humans.getTotalCount()} humans appeared.`);
+    this.isLoggingEnabled = enableLogging;
+    if (this.isLoggingEnabled) {
+      logger.log(`${this.humans.getTotalCount()} humans appeared.`);
+    }
   }
 
   public startLife(): void {
@@ -45,21 +70,39 @@ export class Existence {
     );
   }
 
-  private simulateOneYear(): void {
+  public simulateOneYear(): void {
     this.bumpYear();
+
     const initialCount = this.humans.getTotalCount();
+
     const bornCount = this.humans.makeLove();
+
     const buriedCount = this.humans.buryDead();
+
     const appliedCatastrophe = this.applyRandomCatastrophe();
     const catastropheDeadCount = Math.abs(
       this.humans.getTotalCount() + buriedCount - bornCount - initialCount
     );
-    this.logYear(
-      bornCount,
-      appliedCatastrophe,
-      buriedCount + catastropheDeadCount
-    );
+
+    if (this.isLoggingEnabled) {
+      this.logYear(
+        bornCount,
+        appliedCatastrophe,
+        buriedCount + catastropheDeadCount
+      );
+    }
+
     this.checkGoals();
+  }
+
+  public getPopulationStatus(): PopulationStatus {
+    if (this.humans.getTotalCount() === 0) {
+      return PopulationStatus.Extinct;
+    } else if (this.humans.getTotalCount() >= this.targetPopulation) {
+      return PopulationStatus.Safe;
+    } else {
+      return PopulationStatus.Struggling;
+    }
   }
 
   private logYear(
@@ -67,38 +110,32 @@ export class Existence {
     catastrophe: ICatastrophe | null,
     deadCount: number
   ): void {
-    const messageParts = [];
+    // year
+    const messageParts = [`y${this.currentYear}`];
 
-    // births and deaths
     if (catastrophe === null) {
-      messageParts.push(`⚰️${deadCount}`.padEnd(6));
+      messageParts.push(`✝${deadCount}`);
     } else {
-      messageParts.push(`${catastrophe.type}${deadCount}`.padEnd(6));
+      messageParts.push(`${catastrophe.type}${deadCount}`);
     }
 
-    messageParts.push(`🤱${bornCount}`.padEnd(6));
+    messageParts.push(`❋${bornCount}`);
 
     // current population
     const totalCount = this.humans.getTotalCount();
     if (deadCount > bornCount) {
-      messageParts.push(`${totalCount}↓`);
+      messageParts.push(`<span class="negative">&darr;${totalCount}</span>`);
     } else if (bornCount > deadCount) {
-      messageParts.push(`${totalCount}↑`);
+      messageParts.push(`<span class="positive">&uarr;${totalCount}</span>`);
     } else {
-      messageParts.push(`${totalCount}–`);
+      messageParts.push(`&middot;${totalCount}`);
     }
 
     const groupsCount = this.humans.getAgeGroupsCount();
-    messageParts.push(
-      `{👶${groupsCount.baby} 👩${groupsCount.adult} 👵${groupsCount.elder}}`
-    );
-
-    const averageVitality = this.humans.getTotalAverageVitality();
-
-    messageParts.push(`💓${averageVitality}`);
+    messageParts.push(`(👶${groupsCount.baby} 👩${groupsCount.adult})`);
 
     // final message
-    logger.log(`y${this.currentYear} ${messageParts.join(" ")}`);
+    logger.log(messageParts.join(" "));
   }
 
   private bumpYear(): void {
@@ -106,14 +143,13 @@ export class Existence {
     this.humans.growByOneYear();
   }
 
-  // kills 20-80% of population (if happens)
+  // kills % of population (if happens)
   private applyRandomCatastrophe(): ICatastrophe | null {
     // every catastrophe has 1% chance of happening
     if (Existence.catastrophes.length >= generator.getRandomPercent()) {
       const catastrophe = this.getRandomCatastrophe();
-      this.humans.killRandomHumans(
-        this.humans.getTotalCount() * (catastrophe.killPercentage * 0.01)
-      );
+      const killPercentage = generator.getRandomNumber(catastrophe.killMin, catastrophe.killMax);
+      this.humans.killRandomHumans(this.humans.getTotalCount() * (killPercentage / 100));
       return catastrophe;
     } else {
       return null;
@@ -121,16 +157,17 @@ export class Existence {
   }
 
   private checkGoals(): void {
-    if (this.humans.getTotalCount() === 0) {
+    const status = this.getPopulationStatus();
+    if (status === PopulationStatus.Extinct) {
       window.clearInterval(this.lifeIntervalId);
-      logger.log("All humans died.");
-    } else if (this.humans.getTotalCount() >= Existence.targetPopulation) {
+      if (this.isLoggingEnabled) {
+        logger.log("All humans died.");
+      }
+    } else if (status === PopulationStatus.Safe) {
       window.clearInterval(this.lifeIntervalId);
-      logger.log(
-        `Human population reached ${
-          Existence.targetPopulation
-        }. They're safe now.`
-      );
+      if (this.isLoggingEnabled) {
+        logger.log(`Human population reached ${this.targetPopulation}. They're safe now.`);
+      }
     }
   }
 
