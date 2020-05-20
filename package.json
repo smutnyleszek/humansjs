@@ -1,5 +1,5 @@
 {
-  "name": "humansjs",
+  "name": "exisim",
   "version": "0.0.0",
   "description": "Zero-player human existence simulator",
   "author": {
@@ -7,9 +7,9 @@
     "email": "leszek@magicznyleszek.xyz"
   },
   "private": false,
-  "homepage": "https://github.com/magicznyleszek/humansjs",
-  "repository": "git+https://github.com/magicznyleszek/humansjs.git",
-  "bugs": "https://github.com/magicznyleszek/humansjs/issues",
+  "homepage": "https://github.com/magicznyleszek/exisim",
+  "repository": "git+https://github.com/magicznyleszek/exisim.git",
+  "bugs": "https://github.com/magicznyleszek/exisim/issues",
   "license": "CC0-1.0",
   "scripts": {
     "test": "jest",
