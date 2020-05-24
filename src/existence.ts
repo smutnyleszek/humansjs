@@ -43,6 +43,8 @@ export class Existence {
   // https://en.wikipedia.org/wiki/Minimum_viable_population
   private static readonly initialPopulation: number = 4169;
   private static readonly yearTime: number = 0.1 * 1000; // seconds
+  // FYI this line is the length of maximum output length
+  private static readonly longLine: string = "--------------------------------------------";
 
   private targetPopulation: number;
   private humans: Humans;
@@ -55,6 +57,7 @@ export class Existence {
     this.humans = new Humans(Existence.initialPopulation);
     this.isLoggingEnabled = enableLogging;
     if (this.isLoggingEnabled) {
+      logger.log(Existence.longLine);
       logger.log(`${this.humans.getTotalCount()} humans appeared.`);
     }
   }
@@ -162,11 +165,13 @@ export class Existence {
       window.clearInterval(this.lifeIntervalId);
       if (this.isLoggingEnabled) {
         logger.log("All humans died.");
+        logger.log(Existence.longLine);
       }
     } else if (status === PopulationStatus.Safe) {
       window.clearInterval(this.lifeIntervalId);
       if (this.isLoggingEnabled) {
         logger.log(`Human population reached ${this.targetPopulation}. They're safe now.`);
+        logger.log(Existence.longLine);
       }
     }
   }
