@@ -1,9 +1,19 @@
-import { Existence, PopulationStatus } from "./existence";
+import { Existence, PopulationStatus, CATASTROPHES, ICatastrophe } from "./existence";
 
 describe("Existence", () => {
-  it("should create initial population", () => {
-    const humanExistence = new Existence(9999, true);
-    expect(document.body.textContent).toBe("4169 humans appeared.\n");
+  it("should be able to return random catastrophe", () => {
+    const humanExistence = new Existence(9999, false);
+    const catastrophesCount: any = {};
+    CATASTROPHES.forEach((catastrophe: ICatastrophe) => {
+      catastrophesCount[catastrophe.type] = 0;
+    });
+    for (let i = 0; i < 1000; i++) {
+      const randomCatastrophe = humanExistence.getRandomCatastrophe();
+      catastrophesCount[randomCatastrophe.type]++;
+    }
+    Object.keys(catastrophesCount).forEach((catastropheType: string) => {
+      expect(catastrophesCount[catastropheType] >= 1).toBeTruthy();
+    });
   });
 
   it("should successfully simulate existence", () => {
@@ -17,9 +27,10 @@ describe("Existence", () => {
     ).toBeTruthy();
   });
 
-  it("should kill all humans in most cases", () => {
+  it("should kill all humans in most cases using all catastrophes", () => {
     let totalExtinct = 0;
     let totalSafe = 0;
+
     for (let i = 0; i < 100; i++) {
       const humanExistence = new Existence(50000, false);
       while (humanExistence.getPopulationStatus() === PopulationStatus.Struggling) {
@@ -33,6 +44,7 @@ describe("Existence", () => {
         totalSafe++;
       }
     }
+
     console.log(`Finished with ${totalExtinct} extinct and ${totalSafe} safe.`);
     expect(totalExtinct >= 60).toBeTruthy();
     expect(totalSafe >= 10).toBeTruthy();

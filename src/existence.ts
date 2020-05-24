@@ -2,13 +2,7 @@ import { logger } from "./logger";
 import { Humans } from "./humans";
 import { generator } from "./generator";
 
-declare global {
-  interface String {
-    padEnd(maxLength: number, fillString?: string): string;
-  }
-}
-
-interface ICatastrophe {
+export interface ICatastrophe {
   type: string;
   killMin: number;
   killMax: number;
@@ -20,33 +14,35 @@ export enum PopulationStatus {
   Safe = 1
 }
 
+export const CATASTROPHES: ICatastrophe[] = [
+  // meteor - https://en.wikipedia.org/wiki/Chicxulub_crater
+  { type: "☄️", killMin: 0, killMax: 75 },
+  // plague - https://en.wikipedia.org/wiki/Black_Death
+  { type: "🤢", killMin: 30, killMax: 60 },
+  // famine - https://en.wikipedia.org/wiki/List_of_natural_disasters_by_death_toll
+  { type: "🏜", killMin: 10, killMax: 28 },
+  // ice age
+  { type: "🥶", killMin: 15, killMax: 20 },
+  // climate warming - http://www.impactlab.org/news-insights/valuing-climate-change-mortality/
+  { type: "🌡️", killMin: 16, killMax: 19 },
+  // flood
+  { type: "🌊", killMin: 3, killMax: 13 },
+  // wildfire
+  { type: "🔥", killMin: 11, killMax: 12 },
+  // volcano eruption
+  { type: "🌋", killMin: 1, killMax: 9 },
+  // cyclone
+  { type: "🌪", killMin: 6, killMax: 6 },
+  // war - https://en.m.wikipedia.org/wiki/World_War_II_casualties
+  { type: "⚔️", killMin: 2, killMax: 3 },
+  // religion - https://rationalwiki.org/wiki/Death_toll_of_Christianity
+  { type: "🙏", killMin: 1, killMax: 2 }
+];
+
 export class Existence {
   // https://en.wikipedia.org/wiki/Minimum_viable_population
   private static readonly initialPopulation: number = 4169;
   private static readonly yearTime: number = 0.1 * 1000; // seconds
-
-  private static readonly catastrophes: ICatastrophe[] = [
-    // meteor - https://en.wikipedia.org/wiki/Chicxulub_crater
-    { type: "☄️", killMin: 0, killMax: 75 },
-    // plague - https://en.wikipedia.org/wiki/Black_Death
-    { type: "🤢", killMin: 30, killMax: 60 },
-    // famine - https://en.wikipedia.org/wiki/List_of_natural_disasters_by_death_toll
-    { type: "🏜", killMin: 10, killMax: 28 },
-    // ice age
-    { type: "❄️", killMin: 16, killMax: 20 },
-    // flood
-    { type: "🌊", killMin: 3, killMax: 13 },
-    // wildfire
-    { type: "🔥", killMin: 11, killMax: 12 },
-    // volcano eruption
-    { type: "🌋", killMin: 1, killMax: 9 },
-    // cyclone
-    { type: "🌪", killMin: 6, killMax: 6 },
-    // war - https://en.m.wikipedia.org/wiki/World_War_II_casualties
-    { type: "⚔️", killMin: 2, killMax: 3 },
-    // religion - https://rationalwiki.org/wiki/Death_toll_of_Christianity
-    { type: "⛪", killMin: 1, killMax: 2 }
-  ];
 
   private targetPopulation: number;
   private humans: Humans;
@@ -105,6 +101,10 @@ export class Existence {
     }
   }
 
+  public getRandomCatastrophe(): ICatastrophe {
+    return CATASTROPHES[generator.getRandomNumber(0, CATASTROPHES.length - 1)];
+  }
+
   private logYear(
     bornCount: number,
     catastrophe: ICatastrophe | null,
@@ -146,7 +146,7 @@ export class Existence {
   // kills % of population (if happens)
   private applyRandomCatastrophe(): ICatastrophe | null {
     // every catastrophe has 1% chance of happening
-    if (Existence.catastrophes.length >= generator.getRandomPercent()) {
+    if (CATASTROPHES.length >= generator.getRandomPercent()) {
       const catastrophe = this.getRandomCatastrophe();
       const killPercentage = generator.getRandomNumber(catastrophe.killMin, catastrophe.killMax);
       this.humans.killRandomHumans(this.humans.getTotalCount() * (killPercentage / 100));
@@ -169,11 +169,5 @@ export class Existence {
         logger.log(`Human population reached ${this.targetPopulation}. They're safe now.`);
       }
     }
-  }
-
-  private getRandomCatastrophe(): ICatastrophe {
-    return Existence.catastrophes[
-      generator.getRandomNumber(0, Existence.catastrophes.length - 1)
-    ];
   }
 }

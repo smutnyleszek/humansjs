@@ -4,18 +4,21 @@ class Logger {
 
   // adds given message to the body, ending with newline
   public log(message: string): void {
-    // insertAdjacentHTML seems to be a bit faster than appendChild
-    document.body.insertAdjacentHTML("beforeend", `${message}\n`);
+    const logEl = document.getElementById("log");
+    if (logEl !== null) {
+      // insertAdjacentHTML seems to be a bit faster than appendChild
+      logEl.insertAdjacentHTML("beforeend", `${message}\n`);
 
-    if (
-      document.body.scrollIntoView &&
-      this.autoScroll &&
-      // enable autoscroll only if scrolled to almost end of page
-      window.innerHeight + window.pageYOffset >=
-        document.body.offsetHeight - Logger.safetyOffset
-    ) {
-      // false means to the bottom of the element
-      document.body.scrollIntoView(false);
+      if (
+        logEl.scrollIntoView &&
+        this.autoScroll &&
+        // enable autoscroll only if scrolled to almost end of page
+        window.innerHeight + window.pageYOffset >=
+          logEl.offsetHeight - Logger.safetyOffset
+      ) {
+        // false means to the bottom of the element
+        logEl.scrollIntoView(false);
+      }
     }
   }
 }
