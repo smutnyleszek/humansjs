@@ -10,9 +10,9 @@ export interface ICatastrophe {
 }
 
 export enum PopulationStatus {
-  Extinct = -1,
-  Struggling = 0,
-  Safe = 1
+  Extinct = "extinct",
+  Struggling = "struggling",
+  Safe = "safe"
 }
 
 export const CATASTROPHES: ICatastrophe[] = [
@@ -64,7 +64,6 @@ export class Existence {
   }
 
   public startLife(): void {
-    tracker.trackEvent(EventId.Test, {foo: 1, bar: "abc"});
     this.lifeIntervalId = window.setInterval(
       this.simulateOneYear.bind(this),
       Existence.yearTime
@@ -163,20 +162,27 @@ export class Existence {
 
   private checkGoals(): void {
     const status = this.getPopulationStatus();
-    if (status === PopulationStatus.Extinct) {
+    if (status === PopulationStatus.Extinct || status === PopulationStatus.Safe) {
       window.clearInterval(this.lifeIntervalId);
-      if (this.isLoggingEnabled) {
-        logger.log("All humans died.");
-        logger.log(Existence.longLine);
-        tracker.trackEvent(EventId.Test, {status: status});
-      }
-    } else if (status === PopulationStatus.Safe) {
-      window.clearInterval(this.lifeIntervalId);
-      if (this.isLoggingEnabled) {
-        logger.log(`Human population reached ${this.targetPopulation}. They're safe now.`);
-        logger.log(Existence.longLine);
-        tracker.trackEvent(EventId.Test, {status: status});
-      }
+      this.gameOver();
     }
+  }
+
+  private gameOver(): void {
+    const status = this.getPopulationStatus();
+
+    if (this.isLoggingEnabled) {
+      if (status === PopulationStatus.Extinct) {
+        logger.log("All humans died.");
+      } else if (status === PopulationStatus.Safe) {
+        logger.log(`Human population reached ${this.targetPopulation}. They're safe now.`);
+      }
+      logger.log(Existence.longLine);
+    }
+
+    tracker.trackEvent(EventId.GameOver, {
+      status: status,
+      year: this.currentYear
+    });
   }
 }
