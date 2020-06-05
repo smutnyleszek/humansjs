@@ -14,7 +14,7 @@ describe("Humans", () => {
     for (let i = 0; i < 1000; i++) {
       const randomHuman = myHumans.getRandomHuman();
       if (randomHuman.name === testHuman.name) {
-          wasEverSame = true;
+        wasEverSame = true;
       }
     }
     expect(wasEverSame).toBeTruthy();
@@ -23,7 +23,7 @@ describe("Humans", () => {
     for (let i = 0; i < 1000; i++) {
       const randomHuman = myHumans.getRandomHuman(5);
       if (randomHuman.name === testHuman.name) {
-          wasEverSame = true;
+        wasEverSame = true;
       }
     }
     expect(wasEverSame).toBeFalsy();

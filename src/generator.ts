@@ -11,7 +11,9 @@ class Generator {
   public getUniqueName(): string {
     const firstName = Math.random().toString(36).substring(2);
     const lastName = Date.now().toString(36);
-    return (`${firstName} ${lastName}`).replace(/\b\w/g, (c: string) => c.toUpperCase());
+    return `${firstName} ${lastName}`.replace(/\b\w/g, (c: string) =>
+      c.toUpperCase()
+    );
   }
 }
 

@@ -20,7 +20,7 @@ export class Humans {
   public getAgeGroupsCount(): IAgeGroupsCount {
     const ageGroupsCount = {
       baby: 0,
-      adult: 0
+      adult: 0,
     };
     for (const human of this.population) {
       if (human.isAdult) {

@@ -2,7 +2,7 @@ import { init, track } from "insights-js";
 import * as pack from "../package.json";
 
 export enum EventId {
-  GameOver = "gameover"
+  GameOver = "gameover",
 }
 
 class Tracker {
@@ -15,7 +15,7 @@ class Tracker {
     data.version = pack.version;
     track({
       id: id,
-      parameters: data
+      parameters: data,
     });
   }
 }

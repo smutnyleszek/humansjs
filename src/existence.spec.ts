@@ -1,4 +1,9 @@
-import { Existence, PopulationStatus, CATASTROPHES, ICatastrophe } from "./existence";
+import {
+  Existence,
+  PopulationStatus,
+  CATASTROPHES,
+  ICatastrophe,
+} from "./existence";
 
 describe("Existence", () => {
   it("should be able to return random catastrophe", () => {
@@ -18,12 +23,14 @@ describe("Existence", () => {
 
   it("should successfully simulate existence", () => {
     const humanExistence = new Existence(9999, false);
-    while (humanExistence.getPopulationStatus() === PopulationStatus.Struggling) {
+    while (
+      humanExistence.getPopulationStatus() === PopulationStatus.Struggling
+    ) {
       humanExistence.simulateOneYear();
     }
     expect(
       humanExistence.getPopulationStatus() === PopulationStatus.Extinct ||
-      humanExistence.getPopulationStatus() === PopulationStatus.Safe
+        humanExistence.getPopulationStatus() === PopulationStatus.Safe
     ).toBeTruthy();
   });
 
@@ -33,7 +40,9 @@ describe("Existence", () => {
 
     for (let i = 0; i < 100; i++) {
       const humanExistence = new Existence(50000, false);
-      while (humanExistence.getPopulationStatus() === PopulationStatus.Struggling) {
+      while (
+        humanExistence.getPopulationStatus() === PopulationStatus.Struggling
+      ) {
         humanExistence.simulateOneYear();
       }
 

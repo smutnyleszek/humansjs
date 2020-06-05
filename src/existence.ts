@@ -12,7 +12,7 @@ export interface ICatastrophe {
 export enum PopulationStatus {
   Extinct = "extinct",
   Struggling = "struggling",
-  Safe = "safe"
+  Safe = "safe",
 }
 
 export const CATASTROPHES: ICatastrophe[] = [
@@ -37,7 +37,7 @@ export const CATASTROPHES: ICatastrophe[] = [
   // war - https://en.m.wikipedia.org/wiki/World_War_II_casualties
   { type: "⚔️", killMin: 2, killMax: 3 },
   // religion - https://rationalwiki.org/wiki/Death_toll_of_Christianity
-  { type: "🙏", killMin: 1, killMax: 2 }
+  { type: "🙏", killMin: 1, killMax: 2 },
 ];
 
 export class Existence {
@@ -45,7 +45,8 @@ export class Existence {
   private static readonly initialPopulation: number = 4169;
   private static readonly yearTime: number = 0.1 * 1000; // seconds
   // FYI this line is the length of maximum output length
-  private static readonly longLine: string = "--------------------------------------------";
+  private static readonly longLine: string =
+    "--------------------------------------------";
 
   private targetPopulation: number;
   private humans: Humans;
@@ -157,8 +158,13 @@ export class Existence {
     // every catastrophe has 1% chance of happening
     if (CATASTROPHES.length >= generator.getRandomPercent()) {
       const catastrophe = this.getRandomCatastrophe();
-      const killPercentage = generator.getRandomNumber(catastrophe.killMin, catastrophe.killMax);
-      this.humans.killRandomHumans(this.humans.getTotalCount() * (killPercentage / 100));
+      const killPercentage = generator.getRandomNumber(
+        catastrophe.killMin,
+        catastrophe.killMax
+      );
+      this.humans.killRandomHumans(
+        this.humans.getTotalCount() * (killPercentage / 100)
+      );
       return catastrophe;
     } else {
       return null;
@@ -167,7 +173,10 @@ export class Existence {
 
   private checkGoals(): void {
     const status = this.getPopulationStatus();
-    if (status === PopulationStatus.Extinct || status === PopulationStatus.Safe) {
+    if (
+      status === PopulationStatus.Extinct ||
+      status === PopulationStatus.Safe
+    ) {
       window.clearInterval(this.lifeIntervalId);
       this.gameOver();
     }
@@ -180,14 +189,16 @@ export class Existence {
       if (status === PopulationStatus.Extinct) {
         logger.log("All humans died.");
       } else if (status === PopulationStatus.Safe) {
-        logger.log(`Human population reached ${this.targetPopulation}. They're safe now.`);
+        logger.log(
+          `Human population reached ${this.targetPopulation}. They're safe now.`
+        );
       }
       logger.log(Existence.longLine);
     }
 
     tracker.trackEvent(EventId.GameOver, {
       status: status,
-      year: this.currentYear
+      year: this.currentYear,
     });
   }
 }

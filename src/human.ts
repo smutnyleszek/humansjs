@@ -41,8 +41,9 @@ export class Human {
       return 0;
     } else if (parent1 instanceof Human && parent2 instanceof Human) {
       return Math.floor(
-        Human.lifespanInheritance * ((parent1.lifespan + parent2.lifespan) / 2) +
-        (1 - Human.lifespanInheritance) * randomLifespan
+        Human.lifespanInheritance *
+          ((parent1.lifespan + parent2.lifespan) / 2) +
+          (1 - Human.lifespanInheritance) * randomLifespan
       );
     } else {
       return randomLifespan;

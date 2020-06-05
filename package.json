@@ -24,6 +24,7 @@
     "insights-js": "^1.2.10",
     "jest": "^26.0.1",
     "parcel-bundler": "^1.12.4",
+    "prettier": "^2.0.5",
     "ts-jest": "^26.0.0",
     "typescript": "^3.9.2"
   },
