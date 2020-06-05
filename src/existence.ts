@@ -1,4 +1,5 @@
 import { logger } from "./logger";
+import { tracker, EventId } from "./tracker";
 import { Humans } from "./humans";
 import { generator } from "./generator";
 
@@ -63,6 +64,7 @@ export class Existence {
   }
 
   public startLife(): void {
+    tracker.trackEvent(EventId.Test, {foo: 1, bar: "abc"});
     this.lifeIntervalId = window.setInterval(
       this.simulateOneYear.bind(this),
       Existence.yearTime
@@ -166,12 +168,14 @@ export class Existence {
       if (this.isLoggingEnabled) {
         logger.log("All humans died.");
         logger.log(Existence.longLine);
+        tracker.trackEvent(EventId.Test, {status: status});
       }
     } else if (status === PopulationStatus.Safe) {
       window.clearInterval(this.lifeIntervalId);
       if (this.isLoggingEnabled) {
         logger.log(`Human population reached ${this.targetPopulation}. They're safe now.`);
         logger.log(Existence.longLine);
+        tracker.trackEvent(EventId.Test, {status: status});
       }
     }
   }
