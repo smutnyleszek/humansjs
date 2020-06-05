@@ -114,16 +114,7 @@ export class Existence {
     catastrophe: ICatastrophe | null,
     deadCount: number
   ): void {
-    // year
-    const messageParts = [`y${this.currentYear}`];
-
-    if (catastrophe === null) {
-      messageParts.push(`✝${deadCount}`);
-    } else {
-      messageParts.push(`${catastrophe.type}${deadCount}`);
-    }
-
-    messageParts.push(`❋${bornCount}`);
+    const messageParts = [];
 
     // current population
     const totalCount = this.humans.getTotalCount();
@@ -135,8 +126,22 @@ export class Existence {
       messageParts.push(`&middot;${totalCount}`);
     }
 
+    // born count
+    messageParts.push(`❋${bornCount}`);
+
+    // dead count with catastrophe
+    if (catastrophe === null) {
+      messageParts.push(`✝${deadCount}`);
+    } else {
+      messageParts.push(`${catastrophe.type}${deadCount}`);
+    }
+
+    // age groups population
     const groupsCount = this.humans.getAgeGroupsCount();
     messageParts.push(`(👶${groupsCount.baby} 👩${groupsCount.adult})`);
+
+    // year
+    messageParts.push(`y${this.currentYear}`);
 
     // final message
     logger.log(messageParts.join(" "));
