@@ -1,22 +1,30 @@
-import { init, track } from "insights-js";
+import Analytics from "analytics";
+import googleAnalytics from "@analytics/google-analytics";
 import * as pack from "../package.json";
 
 export enum EventId {
+  Test = "test",
   GameOver = "gameover",
 }
 
 class Tracker {
+  private analytics: any;
+
   public constructor() {
-    init("PwyE12lRXwDKH5aP");
+    this.analytics = Analytics({
+      app: "exisim",
+      plugins: [
+        googleAnalytics({
+          trackingId: "UA-168725324-1",
+        }),
+      ],
+    });
   }
 
   public trackEvent(id: string, data: any): void {
     // include game version
     data.version = pack.version;
-    track({
-      id: id,
-      parameters: data,
-    });
+    this.analytics.track(id, data);
   }
 }
 
