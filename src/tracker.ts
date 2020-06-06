@@ -2,7 +2,6 @@ import mixpanel from "mixpanel-browser";
 import * as pack from "../package.json";
 
 export enum EventId {
-  Test = "test",
   GameOver = "gameover",
 }
 

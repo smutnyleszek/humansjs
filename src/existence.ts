@@ -65,12 +65,6 @@ export class Existence {
   }
 
   public startLife(): void {
-    tracker.trackEvent(EventId.Test, {
-      text: "abc",
-      number: 123,
-      list: ["pterodactyl", "diplodocus"],
-      obj: {name: "Qwerty", age: 33}
-    });
     this.lifeIntervalId = window.setInterval(
       this.simulateOneYear.bind(this),
       Existence.yearTime
