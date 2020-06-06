@@ -45,8 +45,7 @@ export class Existence {
   private static readonly initialPopulation: number = 4169;
   private static readonly yearTime: number = 0.1 * 1000; // seconds
   // FYI this line is the length of maximum output length
-  private static readonly longLine: string =
-    "--------------------------------------------";
+  private static readonly longLine: string = "-".repeat(48);
 
   private targetPopulation: number;
   private humans: Humans;
@@ -139,7 +138,7 @@ export class Existence {
 
     // age groups population
     const groupsCount = this.humans.getAgeGroupsCount();
-    messageParts.push(`(👶${groupsCount.baby} 👩${groupsCount.adult})`);
+    messageParts.push(`👶${groupsCount.baby} 👩${groupsCount.adult}`);
 
     // year
     messageParts.push(`y${this.currentYear}`);
