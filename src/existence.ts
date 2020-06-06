@@ -1,4 +1,5 @@
 import { logger } from "./logger";
+import { tracker, EventId } from "./tracker";
 import { Humans } from "./humans";
 import { generator } from "./generator";
 
@@ -64,6 +65,12 @@ export class Existence {
   }
 
   public startLife(): void {
+    tracker.trackEvent(EventId.Test, {
+      text: "abc",
+      number: 123,
+      list: ["pterodactyl", "diplodocus"],
+      obj: {name: "Qwerty", age: 33}
+    });
     this.lifeIntervalId = window.setInterval(
       this.simulateOneYear.bind(this),
       Existence.yearTime
@@ -194,5 +201,10 @@ export class Existence {
       }
       logger.log(Existence.longLine);
     }
+
+    tracker.trackEvent(EventId.GameOver, {
+      status: status,
+      year: this.currentYear,
+    });
   }
 }
