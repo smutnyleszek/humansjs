@@ -9,10 +9,20 @@ export class Human {
   public static readonly pubertyAge: number = 12;
   // https://en.wikipedia.org/wiki/Pregnancy_over_age_50
   public static readonly menopauseAge: number = 72;
-  // The Framingham Heart Study https://www.sharecare.com/health/longevity/how-parents-lifespan-affect-lifespan
-  private static readonly lifespanInheritance: number = 6 / 100;
+  // The Framingham Heart Study
+  // https://sharecare.com/health/longevity/how-parents-lifespan-affect-lifespan
+  public static readonly lifespanInheritance: number = 6 / 100;
   // https://revisesociology.com/2017/11/07/how-many-people-single/
-  private static readonly inRelationshipChance: number = 61 / 100;
+  public static readonly inRelationshipChance: number = 61 / 100;
+
+  // returns a % chance two given humans will fall in love and make a baby
+  public static getBabyChance(human1: Human, human2: Human): number {
+    if (human1.isAdult && human2.isAdult) {
+      return 100 * (Human.pregnancyChance * Human.inRelationshipChance);
+    } else {
+      return 0;
+    }
+  }
 
   public age: number = 0;
   public isAdult: boolean = false;
@@ -27,7 +37,8 @@ export class Human {
     this.checkIfAlive();
   }
 
-  // increments the age by 1, checks if didn't die of old age and assigns to proper age group
+  // increments the age by 1,
+  // checks if didn't die of old age and assigns to proper age group
   public bumpAge(): void {
     this.age++;
     this.isAdult = this.age >= Human.pubertyAge;
@@ -52,14 +63,5 @@ export class Human {
 
   private checkIfAlive(): void {
     this.isAlive = this.age < this.lifespan;
-  }
-
-  // returns a % chance two given humans will fall in love and make a baby
-  public static getBabyChance(human1: Human, human2: Human): number {
-    if (human1.isAdult && human2.isAdult) {
-      return 100 * (Human.pregnancyChance * Human.inRelationshipChance);
-    } else {
-      return 0;
-    }
   }
 }

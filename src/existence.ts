@@ -1,7 +1,7 @@
-import { logger } from "./logger";
-import { tracker, EventId } from "./tracker";
-import { Humans } from "./humans";
 import { generator } from "./generator";
+import { Humans } from "./humans";
+import { logger } from "./logger";
+import { EventId, tracker } from "./tracker";
 
 export interface ICatastrophe {
   type: string;
@@ -16,15 +16,19 @@ export enum PopulationStatus {
 }
 
 export const CATASTROPHES: ICatastrophe[] = [
-  // meteor - https://en.wikipedia.org/wiki/Chicxulub_crater
+  // meteor
+  // https://en.wikipedia.org/wiki/Chicxulub_crater
   { type: "☄️", killMin: 0, killMax: 75 },
-  // plague - https://en.wikipedia.org/wiki/Black_Death
+  // plague
+  // https://en.wikipedia.org/wiki/Black_Death
   { type: "🤢", killMin: 30, killMax: 60 },
-  // famine - https://en.wikipedia.org/wiki/List_of_natural_disasters_by_death_toll
+  // famine
+  // https://en.wikipedia.org/wiki/List_of_natural_disasters_by_death_toll
   { type: "🏜", killMin: 10, killMax: 28 },
   // ice age
   { type: "🥶", killMin: 15, killMax: 20 },
-  // climate warming - http://www.impactlab.org/news-insights/valuing-climate-change-mortality/
+  // climate warming
+  // http://www.impactlab.org/news-insights/valuing-climate-change-mortality/
   { type: "🌡️", killMin: 16, killMax: 19 },
   // flood
   { type: "🌊", killMin: 3, killMax: 13 },
@@ -34,9 +38,11 @@ export const CATASTROPHES: ICatastrophe[] = [
   { type: "🌋", killMin: 1, killMax: 9 },
   // cyclone
   { type: "🌪", killMin: 6, killMax: 6 },
-  // war - https://en.m.wikipedia.org/wiki/World_War_II_casualties
+  // war
+  // https://en.m.wikipedia.org/wiki/World_War_II_casualties
   { type: "⚔️", killMin: 2, killMax: 3 },
-  // religion - https://rationalwiki.org/wiki/Death_toll_of_Christianity
+  // religion
+  // https://rationalwiki.org/wiki/Death_toll_of_Christianity
   { type: "🙏", killMin: 1, killMax: 2 },
 ];
 
@@ -196,7 +202,7 @@ export class Existence {
     }
 
     tracker.trackEvent(EventId.GameOver, {
-      status: status,
+      status,
       year: this.currentYear,
     });
   }

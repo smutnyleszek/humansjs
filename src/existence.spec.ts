@@ -1,8 +1,8 @@
 import {
-  Existence,
-  PopulationStatus,
   CATASTROPHES,
+  Existence,
   ICatastrophe,
+  PopulationStatus,
 } from "./existence";
 
 describe("Existence", () => {
@@ -54,7 +54,7 @@ describe("Existence", () => {
       }
     }
 
-    console.log(`Finished with ${totalExtinct} extinct and ${totalSafe} safe.`);
+    // console.log(`Total ${totalExtinct} extinct and ${totalSafe} safe.`);
     expect(totalExtinct >= 60).toBeTruthy();
     expect(totalSafe >= 10).toBeTruthy();
   });

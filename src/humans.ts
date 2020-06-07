@@ -1,5 +1,5 @@
-import { Human } from "./human";
 import { generator } from "./generator";
+import { Human } from "./human";
 
 interface IAgeGroupsCount {
   baby: number;
@@ -19,8 +19,8 @@ export class Humans {
 
   public getAgeGroupsCount(): IAgeGroupsCount {
     const ageGroupsCount = {
-      baby: 0,
       adult: 0,
+      baby: 0,
     };
     for (const human of this.population) {
       if (human.isAdult) {
@@ -59,7 +59,8 @@ export class Humans {
     return populationCountBefore - this.population.length;
   }
 
-  // finds a random mate for each human and if matched will create a new baby human
+  // finds a random mate for each human and if matched
+  // will create a new baby human
   // returns the number of born humans
   public makeLove(): number {
     let bornCount = 0;
@@ -94,7 +95,7 @@ export class Humans {
     return this.population[randomIndex];
   }
 
-  // checks if two humans are able to love each other and if are able to get pregnant
+  // checks if two humans are able to love each other and able to get pregnant
   private isLoveFruitful(human1: Human, human2: Human): boolean {
     return Human.getBabyChance(human1, human2) > generator.getRandomPercent();
   }
