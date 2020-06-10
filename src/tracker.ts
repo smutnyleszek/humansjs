@@ -7,7 +7,11 @@ export enum EventId {
 
 class Tracker {
   public constructor() {
-    mixpanel.init("b70e3845346d947336c4d57f05e75268");
+    mixpanel.init("b70e3845346d947336c4d57f05e75268", {
+      disable_persistence: true,
+      ip: false,
+      track_pageview: false,
+    });
   }
 
   public trackEvent(id: string, data: any): void {

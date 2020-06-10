@@ -4,6 +4,7 @@ import {
   ICatastrophe,
   PopulationStatus,
 } from "./existence";
+import { logger } from "./logger";
 
 describe("Existence", () => {
   it("should be able to return random catastrophe", () => {
@@ -34,6 +35,19 @@ describe("Existence", () => {
     ).toBeTruthy();
   });
 
+  it("should log information if enabled", () => {
+    const humanExistence = new Existence(9999, true);
+    while (
+      humanExistence.getPopulationStatus() === PopulationStatus.Struggling
+    ) {
+      humanExistence.simulateOneYear();
+    }
+    if (logger.output) {
+      expect(logger.output.innerText.length > 10).toBeTruthy();
+    }
+  });
+
+  // this is the game balance test
   it("should kill all humans in most cases using all catastrophes", () => {
     let totalExtinct = 0;
     let totalSafe = 0;
