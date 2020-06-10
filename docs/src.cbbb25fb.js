@@ -17,4 +17,4 @@ module.exports={name:"exisim",version:"2.7.0",description:"Zero-player human exi
 },{"./generator":"L0ny","./humans":"hrU1","./logger":"WOs9","./tracker":"KIU6"}],"QCba":[function(require,module,exports) {
 "use strict";var e=require("./existence");window.onload=function(){new e.Existence(1e6,!0).startLife()};
 },{"./existence":"l8WT"}]},{},["QCba"], null)
-//# sourceMappingURL=src.6da25c60.js.map
+//# sourceMappingURL=src.cbbb25fb.js.map

@@ -20,7 +20,7 @@ export class Humans {
   public getAdultsPercentage(): string {
     const groupsCount = this.getAgeGroupsCount();
     const totalCount = this.getTotalCount();
-    return (groupsCount.adult / totalCount * 100).toFixed(1);
+    return ((groupsCount.adult / totalCount) * 100).toFixed(1);
   }
 
   public getAgeGroupsCount(): IAgeGroupsCount {
