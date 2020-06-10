@@ -142,9 +142,8 @@ export class Existence {
       messageParts.push(`${catastrophe.type}${deadCount}`);
     }
 
-    // age groups population
-    const groupsCount = this.humans.getAgeGroupsCount();
-    messageParts.push(`♥️${groupsCount.adult}`);
+    // adults percentage
+    messageParts.push(`♥️${this.humans.getAdultsPercentage()}%`);
 
     // year
     messageParts.push(`y${this.currentYear}`);
