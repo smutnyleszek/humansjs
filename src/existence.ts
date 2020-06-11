@@ -1,50 +1,9 @@
+import { CATASTROPHES, ICatastrophe, PopulationStatus } from "./common";
 import { generator } from "./generator";
 import { Humans } from "./humans";
 import { logger } from "./logger";
-import { EventId, tracker } from "./tracker";
-
-export interface ICatastrophe {
-  type: string;
-  killMin: number;
-  killMax: number;
-}
-
-export enum PopulationStatus {
-  Extinct = "extinct",
-  Struggling = "struggling",
-  Safe = "safe",
-}
-
-export const CATASTROPHES: ICatastrophe[] = [
-  // meteor
-  // https://en.wikipedia.org/wiki/Chicxulub_crater
-  { type: "☄️", killMin: 0, killMax: 75 },
-  // plague
-  // https://en.wikipedia.org/wiki/Black_Death
-  { type: "🤢", killMin: 30, killMax: 60 },
-  // famine
-  // https://en.wikipedia.org/wiki/List_of_natural_disasters_by_death_toll
-  { type: "🏜", killMin: 10, killMax: 28 },
-  // ice age
-  { type: "🥶", killMin: 15, killMax: 20 },
-  // climate warming
-  // http://www.impactlab.org/news-insights/valuing-climate-change-mortality/
-  { type: "🌡️", killMin: 16, killMax: 19 },
-  // flood
-  { type: "🌊", killMin: 3, killMax: 13 },
-  // wildfire
-  { type: "🔥", killMin: 11, killMax: 12 },
-  // volcano eruption
-  { type: "🌋", killMin: 1, killMax: 9 },
-  // cyclone
-  { type: "🌪", killMin: 6, killMax: 6 },
-  // war
-  // https://en.m.wikipedia.org/wiki/World_War_II_casualties
-  { type: "⚔️", killMin: 2, killMax: 3 },
-  // religion
-  // https://rationalwiki.org/wiki/Death_toll_of_Christianity
-  { type: "🙏", killMin: 1, killMax: 2 },
-];
+import { stats } from "./stats";
+import { tracker } from "./tracker";
 
 export class Existence {
   // https://en.wikipedia.org/wiki/Minimum_viable_population
@@ -61,8 +20,12 @@ export class Existence {
 
   public constructor(targetPopulation: number, enableLogging: boolean) {
     this.targetPopulation = targetPopulation;
-    this.humans = new Humans(Existence.initialPopulation);
     this.isLoggingEnabled = enableLogging;
+
+    this.humans = new Humans(Existence.initialPopulation);
+
+    stats.reportBornCount(this.humans.getTotalCount());
+
     if (this.isLoggingEnabled) {
       logger.log(Existence.longLine);
       logger.log(`${this.humans.getTotalCount()} humans appeared.`);
@@ -82,10 +45,15 @@ export class Existence {
     const initialCount = this.humans.getTotalCount();
 
     const bornCount = this.humans.makeLove();
+    stats.reportBornCount(bornCount);
 
     const buriedCount = this.humans.buryDead();
 
     const appliedCatastrophe = this.applyRandomCatastrophe();
+    if (appliedCatastrophe !== null) {
+      stats.reportCatastropheCount(appliedCatastrophe.type);
+    }
+
     const catastropheDeadCount = Math.abs(
       this.humans.getTotalCount() + buriedCount - bornCount - initialCount
     );
@@ -97,6 +65,8 @@ export class Existence {
         buriedCount + catastropheDeadCount
       );
     }
+
+    stats.reportPopulation(this.humans.getTotalCount());
 
     this.checkGoals();
   }
@@ -188,6 +158,7 @@ export class Existence {
 
   private gameOver(): void {
     const status = this.getPopulationStatus();
+    const allStats = stats.getAll();
 
     if (this.isLoggingEnabled) {
       if (status === PopulationStatus.Extinct) {
@@ -198,11 +169,9 @@ export class Existence {
         );
       }
       logger.log(Existence.longLine);
+      logger.log(`Total people born: ${allStats.totalBornCount}.`);
     }
 
-    tracker.trackEvent(EventId.GameOver, {
-      status,
-      year: this.currentYear,
-    });
+    tracker.trackGameOver(status, this.currentYear);
   }
 }

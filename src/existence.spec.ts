@@ -1,9 +1,5 @@
-import {
-  CATASTROPHES,
-  Existence,
-  ICatastrophe,
-  PopulationStatus,
-} from "./existence";
+import { CATASTROPHES, ICatastrophe, PopulationStatus } from "./common";
+import { Existence } from "./existence";
 import { logger } from "./logger";
 
 describe("Existence", () => {
