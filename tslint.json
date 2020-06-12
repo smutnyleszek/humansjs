@@ -5,6 +5,10 @@
     "max-line-length": {
       "options": [80]
     },
-    "trailing-comma": false
+    "trailing-comma": false,
+    "object-literal-key-quotes": {
+      "severity": "warning",
+      "options": ["as-needed"]
+    }
   }
 }

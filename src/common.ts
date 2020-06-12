@@ -1,5 +1,6 @@
 export interface ICatastrophe {
-  type: CatastropheType;
+  name: CatastropheName;
+  icon: string;
   killMin: number;
   killMax: number;
 }
@@ -10,36 +11,36 @@ export enum PopulationStatus {
   Safe = "safe",
 }
 
-export enum CatastropheType {
-  ClimateWarming = "🌡️",
-  Cyclone = "🌪",
-  Famine = "🏜",
-  Flood = "🌊",
-  IceAge = "🥶",
-  Meteor = "☄️",
-  Plague = "🤢",
-  Religion = "🙏",
-  VolcanoEruption = "🌋",
-  War = "⚔️",
-  Wildfire = "🔥",
+export enum CatastropheName {
+  Climate = "climate-warming",
+  Cyclone = "cyclone",
+  Famine = "famine",
+  Flood = "flood",
+  Ice = "ice-age",
+  Meteor = "meteor",
+  Plague = "plague",
+  Religion = "religion",
+  Volcano = "volcano-eruption",
+  War = "war",
+  Wildfire = "wildfire",
 }
 
 export const CATASTROPHES: ICatastrophe[] = [
   // https://en.wikipedia.org/wiki/Chicxulub_crater
-  { type: CatastropheType.Meteor, killMin: 0, killMax: 75 },
+  { name: CatastropheName.Meteor, icon: "☄️", killMin: 0, killMax: 75 },
   // https://en.wikipedia.org/wiki/Black_Death
-  { type: CatastropheType.Plague, killMin: 30, killMax: 60 },
+  { name: CatastropheName.Plague, icon: "🤢", killMin: 30, killMax: 60 },
   // https://en.wikipedia.org/wiki/List_of_natural_disasters_by_death_toll
-  { type: CatastropheType.Famine, killMin: 10, killMax: 28 },
-  { type: CatastropheType.IceAge, killMin: 15, killMax: 20 },
+  { name: CatastropheName.Famine, icon: "🏜", killMin: 10, killMax: 28 },
+  { name: CatastropheName.Ice, icon: "🥶", killMin: 15, killMax: 20 },
   // http://www.impactlab.org/news-insights/valuing-climate-change-mortality/
-  { type: CatastropheType.ClimateWarming, killMin: 16, killMax: 19 },
-  { type: CatastropheType.Flood, killMin: 3, killMax: 13 },
-  { type: CatastropheType.Wildfire, killMin: 11, killMax: 12 },
-  { type: CatastropheType.VolcanoEruption, killMin: 1, killMax: 9 },
-  { type: CatastropheType.Cyclone, killMin: 6, killMax: 6 },
+  { name: CatastropheName.Climate, icon: "🌡️", killMin: 16, killMax: 19 },
+  { name: CatastropheName.Flood, icon: "🌊", killMin: 3, killMax: 13 },
+  { name: CatastropheName.Wildfire, icon: "🔥", killMin: 11, killMax: 12 },
+  { name: CatastropheName.Volcano, icon: "🌋", killMin: 1, killMax: 9 },
+  { name: CatastropheName.Cyclone, icon: "🌪", killMin: 6, killMax: 6 },
   // https://en.m.wikipedia.org/wiki/World_War_II_casualties
-  { type: CatastropheType.War, killMin: 2, killMax: 3 },
+  { name: CatastropheName.War, icon: "⚔️", killMin: 2, killMax: 3 },
   // https://rationalwiki.org/wiki/Death_toll_of_Christianity
-  { type: CatastropheType.Religion, killMin: 1, killMax: 2 },
+  { name: CatastropheName.Religion, icon: "🙏", killMin: 1, killMax: 2 },
 ];

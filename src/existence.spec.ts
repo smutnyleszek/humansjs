@@ -7,11 +7,11 @@ describe("Existence", () => {
     const humanExistence = new Existence(9999, false);
     const catastrophesCount: any = {};
     CATASTROPHES.forEach((catastrophe: ICatastrophe) => {
-      catastrophesCount[catastrophe.type] = 0;
+      catastrophesCount[catastrophe.name] = 0;
     });
     for (let i = 0; i < 1000; i++) {
       const randomCatastrophe = humanExistence.getRandomCatastrophe();
-      catastrophesCount[randomCatastrophe.type]++;
+      catastrophesCount[randomCatastrophe.name]++;
     }
     Object.keys(catastrophesCount).forEach((catastropheType: string) => {
       expect(catastrophesCount[catastropheType] >= 1).toBeTruthy();

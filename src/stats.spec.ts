@@ -1,7 +1,11 @@
-import { CatastropheType } from "./common";
+import { CatastropheName } from "./common";
 import { stats } from "./stats";
 
 describe("stats", () => {
+  beforeEach(() => {
+    stats.clear();
+  });
+
   it("should increment born count", () => {
     expect(stats.getAll().totalBornCount).toBe(0);
     stats.reportBornCount(12);
@@ -10,16 +14,30 @@ describe("stats", () => {
     expect(stats.getAll().totalBornCount).toBe(108);
   });
 
-  it("should increment catastrophe count", () => {
-    expect(stats.getAll().catastrophesCount[CatastropheType.War]).toBe(0);
-    expect(stats.getAll().catastrophesCount[CatastropheType.Religion]).toBe(0);
-    stats.reportCatastropheCount(CatastropheType.War);
-    expect(stats.getAll().catastrophesCount[CatastropheType.War]).toBe(1);
-    expect(stats.getAll().catastrophesCount[CatastropheType.Religion]).toBe(0);
-    stats.reportCatastropheCount(CatastropheType.War);
-    stats.reportCatastropheCount(CatastropheType.Religion);
-    expect(stats.getAll().catastrophesCount[CatastropheType.War]).toBe(2);
-    expect(stats.getAll().catastrophesCount[CatastropheType.Religion]).toBe(1);
+  it("should increment catastrophes count", () => {
+    expect(stats.getAll().catastrophesCount[CatastropheName.War]).toBe(0);
+    expect(stats.getAll().catastrophesCount[CatastropheName.Religion]).toBe(0);
+    expect(stats.getAll().catastrophesCountSum).toBe(0);
+    stats.reportCatastropheCount(CatastropheName.War);
+    expect(stats.getAll().catastrophesCount[CatastropheName.War]).toBe(1);
+    expect(stats.getAll().catastrophesCount[CatastropheName.Religion]).toBe(0);
+    expect(stats.getAll().catastrophesCountSum).toBe(1);
+    stats.reportCatastropheCount(CatastropheName.War);
+    stats.reportCatastropheCount(CatastropheName.Religion);
+    expect(stats.getAll().catastrophesCount[CatastropheName.War]).toBe(2);
+    expect(stats.getAll().catastrophesCount[CatastropheName.Religion]).toBe(1);
+    expect(stats.getAll().catastrophesCountSum).toBe(3);
+  });
+
+  it("should return percentage for a catastrophe", () => {
+    expect(stats.getCatastrophePercentage(CatastropheName.War)).toBe(0);
+    stats.reportCatastropheCount(CatastropheName.War);
+    expect(stats.getCatastrophePercentage(CatastropheName.War)).toBe(100);
+    stats.reportCatastropheCount(CatastropheName.Religion);
+    expect(stats.getCatastrophePercentage(CatastropheName.War)).toBe(50);
+    stats.reportCatastropheCount(CatastropheName.Religion);
+    expect(stats.getCatastrophePercentage(CatastropheName.War)).toBe(33.3);
+    expect(stats.getCatastrophePercentage(CatastropheName.Religion)).toBe(66.7);
   });
 
   it("should store highest and lowest population", () => {

@@ -1,6 +1,6 @@
 import mixpanel from "mixpanel-browser";
 import * as pack from "../package.json";
-import { PopulationStatus } from "./common";
+import { CatastropheName, PopulationStatus } from "./common";
 import { stats } from "./stats";
 
 export enum EventId {
@@ -8,11 +8,22 @@ export enum EventId {
 }
 
 interface IGameOverData {
-  catastrophesCount: { [key: string]: number };
-  highestPopulation: number;
-  lowestPopulation: number;
+  catastropheClimate: number;
+  catastropheCyclone: number;
+  catastropheFamine: number;
+  catastropheFlood: number;
+  catastropheIce: number;
+  catastropheMeteor: number;
+  catastrophePlague: number;
+  catastropheReligion: number;
+  catastropheVolcano: number;
+  catastropheWar: number;
+  catastropheWildfire: number;
+  populationMax: number;
+  populationMin: number;
   status: PopulationStatus;
   totalBornCount: number;
+  totalCatastrophes: number;
   version?: string;
   year: number;
 }
@@ -29,11 +40,32 @@ class Tracker {
   public trackGameOver(status: PopulationStatus, year: number) {
     const allStats = stats.getAll();
     this.trackEvent(EventId.GameOver, {
-      catastrophesCount: allStats.catastrophesCount,
-      highestPopulation: allStats.highestPopulation,
-      lowestPopulation: allStats.lowestPopulation,
+      catastropheClimate: stats.getCatastrophePercentage(
+        CatastropheName.Climate
+      ),
+      catastropheCyclone: stats.getCatastrophePercentage(
+        CatastropheName.Cyclone
+      ),
+      catastropheFamine: stats.getCatastrophePercentage(CatastropheName.Famine),
+      catastropheFlood: stats.getCatastrophePercentage(CatastropheName.Flood),
+      catastropheIce: stats.getCatastrophePercentage(CatastropheName.Ice),
+      catastropheMeteor: stats.getCatastrophePercentage(CatastropheName.Meteor),
+      catastrophePlague: stats.getCatastrophePercentage(CatastropheName.Plague),
+      catastropheReligion: stats.getCatastrophePercentage(
+        CatastropheName.Religion
+      ),
+      catastropheVolcano: stats.getCatastrophePercentage(
+        CatastropheName.Volcano
+      ),
+      catastropheWar: stats.getCatastrophePercentage(CatastropheName.War),
+      catastropheWildfire: stats.getCatastrophePercentage(
+        CatastropheName.Wildfire
+      ),
+      populationMax: allStats.highestPopulation,
+      populationMin: allStats.lowestPopulation,
       status,
       totalBornCount: allStats.totalBornCount,
+      totalCatastrophes: allStats.catastrophesCountSum,
       year,
     });
   }

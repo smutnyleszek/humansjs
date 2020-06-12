@@ -51,7 +51,7 @@ export class Existence {
 
     const appliedCatastrophe = this.applyRandomCatastrophe();
     if (appliedCatastrophe !== null) {
-      stats.reportCatastropheCount(appliedCatastrophe.type);
+      stats.reportCatastropheCount(appliedCatastrophe.name);
     }
 
     const catastropheDeadCount = Math.abs(
@@ -109,7 +109,7 @@ export class Existence {
     if (catastrophe === null) {
       messageParts.push(`✝${deadCount}`);
     } else {
-      messageParts.push(`${catastrophe.type}${deadCount}`);
+      messageParts.push(`${catastrophe.icon}${deadCount}`);
     }
 
     // adults percentage

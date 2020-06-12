@@ -17,6 +17,7 @@ export class Humans {
     return this.population.length;
   }
 
+  // returns percentage as string to preserve trailing zeros
   public getAdultsPercentage(): string {
     const groupsCount = this.getAgeGroupsCount();
     const totalCount = this.getTotalCount();
