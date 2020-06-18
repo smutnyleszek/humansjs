@@ -1,11 +1,16 @@
+import { MAX_CHARS } from "./common";
+
 class Logger {
-  private static readonly safetyOffset: number = 100;
+  private static readonly safetyOffset: number = 100; // px
   public output: HTMLElement | null = null;
 
   // adds given message to the body, ending with newline
   public log(message: string): void {
     this.verifyOutput();
     if (this.output) {
+      if (message.length > MAX_CHARS) {
+        console.warn(`Logging overflowing message: "${message}"!`);
+      }
       // insertAdjacentHTML seems to be a bit faster than appendChild
       this.output.insertAdjacentHTML("beforeend", `${message}\n`);
       this.scrollToEnd();

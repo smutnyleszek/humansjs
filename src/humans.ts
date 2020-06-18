@@ -51,11 +51,15 @@ export class Humans {
 
   // immediately removes X random humans from the population
   public killRandomHumans(killCount: number): void {
-    for (let i = killCount; i >= 0; i--) {
-      const populationLength = this.population.length;
-      const randomIndex = Math.floor(Math.random() * populationLength);
-      this.population[randomIndex] = this.population[populationLength - 1];
-      this.population.pop();
+    if (killCount >= this.population.length) {
+      this.population = [];
+    } else {
+      for (let i = killCount; i >= 0; i--) {
+        const populationLength = this.population.length;
+        const randomIndex = Math.floor(Math.random() * populationLength);
+        this.population[randomIndex] = this.population[populationLength - 1];
+        this.population.pop();
+      }
     }
   }
 

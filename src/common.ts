@@ -40,7 +40,10 @@ export const CATASTROPHES: ICatastrophe[] = [
   { name: CatastropheName.Volcano, icon: "🌋", killMin: 1, killMax: 9 },
   { name: CatastropheName.Cyclone, icon: "🌪", killMin: 6, killMax: 6 },
   // https://en.m.wikipedia.org/wiki/World_War_II_casualties
+  // https://en.m.wikipedia.org/wiki/Atrocities_in_the_Congo_Free_State
   { name: CatastropheName.War, icon: "⚔️", killMin: 2, killMax: 3 },
   // https://rationalwiki.org/wiki/Death_toll_of_Christianity
   { name: CatastropheName.Religion, icon: "🙏", killMin: 1, killMax: 2 },
 ];
+
+export const MAX_CHARS = 36;

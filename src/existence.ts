@@ -1,4 +1,9 @@
-import { CATASTROPHES, ICatastrophe, PopulationStatus } from "./common";
+import {
+  CATASTROPHES,
+  ICatastrophe,
+  MAX_CHARS,
+  PopulationStatus,
+} from "./common";
 import { generator } from "./generator";
 import { Humans } from "./humans";
 import { logger } from "./logger";
@@ -10,7 +15,7 @@ export class Existence {
   private static readonly initialPopulation: number = 4169;
   private static readonly yearTime: number = 0.1 * 1000; // seconds
   // FYI this line is the length of maximum output length
-  private static readonly longLine: string = "-".repeat(36);
+  private static readonly longLine: string = "-".repeat(MAX_CHARS);
 
   private targetPopulation: number;
   private humans: Humans;
@@ -164,9 +169,8 @@ export class Existence {
       if (status === PopulationStatus.Extinct) {
         logger.log("All humans died.");
       } else if (status === PopulationStatus.Safe) {
-        logger.log(
-          `Human population reached ${this.targetPopulation}. They're safe now.`
-        );
+        logger.log(`Human population reached ${this.targetPopulation}.`);
+        logger.log("They're safe now.");
       }
       logger.log(Existence.longLine);
       logger.log(`Total people born: ${allStats.totalBornCount}.`);

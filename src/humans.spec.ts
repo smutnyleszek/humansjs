@@ -6,6 +6,15 @@ describe("Humans", () => {
     expect(myHumans.getTotalCount()).toBe(15);
   });
 
+  it("should kill all humans if got too big number in killRandomHumans", () => {
+    const myHumans = new Humans(15);
+    const testFn = () => {
+      myHumans.killRandomHumans(30);
+    };
+    expect(testFn).not.toThrow();
+    expect(myHumans.getTotalCount()).toBe(0);
+  });
+
   it("should be able to return only other human with getRandomHuman", () => {
     const myHumans = new Humans(10);
     const testHuman = myHumans.getHuman(5);
