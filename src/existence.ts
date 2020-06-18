@@ -1,5 +1,6 @@
 import {
   CATASTROPHES,
+  ClassNames,
   ICatastrophe,
   MAX_CHARS,
   PopulationStatus,
@@ -100,9 +101,13 @@ export class Existence {
     // current population
     const totalCount = this.humans.getTotalCount();
     if (deadCount > bornCount) {
-      messageParts.push(`<span class="negative">&darr;${totalCount}</span>`);
+      messageParts.push(
+        `<span class="${ClassNames.Negative}">&darr;${totalCount}</span>`
+      );
     } else if (bornCount > deadCount) {
-      messageParts.push(`<span class="positive">&uarr;${totalCount}</span>`);
+      messageParts.push(
+        `<span class="${ClassNames.Positive}">&uarr;${totalCount}</span>`
+      );
     } else {
       messageParts.push(`&middot;${totalCount}`);
     }
@@ -111,10 +116,12 @@ export class Existence {
     messageParts.push(`❋${bornCount}`);
 
     // dead count with catastrophe
+    let className = "";
     if (catastrophe === null) {
       messageParts.push(`✝${deadCount}`);
     } else {
       messageParts.push(`${catastrophe.icon}${deadCount}`);
+      className = ClassNames.Catastrophe;
     }
 
     // adults percentage
@@ -124,7 +131,7 @@ export class Existence {
     messageParts.push(`y${this.currentYear}`);
 
     // final message
-    logger.log(messageParts.join(" "));
+    logger.log(messageParts.join(" "), className);
   }
 
   private bumpYear(): void {

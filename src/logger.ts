@@ -4,15 +4,20 @@ class Logger {
   private static readonly safetyOffset: number = 100; // px
   public output: HTMLElement | null = null;
 
-  // adds given message to the body, ending with newline
-  public log(message: string): void {
+  // adds given message to the body in new line
+  public log(message: string, className?: string): void {
     this.verifyOutput();
+    if (message.length > MAX_CHARS) {
+      console.warn(`Logging overflowing message: "${message}"!`);
+    }
     if (this.output) {
-      if (message.length > MAX_CHARS) {
-        console.warn(`Logging overflowing message: "${message}"!`);
-      }
+      const row = window.document.createElement("div");
       // insertAdjacentHTML seems to be a bit faster than appendChild
-      this.output.insertAdjacentHTML("beforeend", `${message}\n`);
+      row.innerHTML = message;
+      if (className) {
+        row.classList.add(className);
+      }
+      this.output.insertAdjacentElement("beforeend", row);
       this.scrollToEnd();
     }
   }

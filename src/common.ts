@@ -11,6 +11,12 @@ export enum PopulationStatus {
   Safe = "safe",
 }
 
+export enum ClassNames {
+  Catastrophe = "c",
+  Negative = "n",
+  Positive = "p",
+}
+
 export enum CatastropheName {
   Climate = "climate-warming",
   Cyclone = "cyclone",
