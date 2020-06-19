@@ -1,15 +1,18 @@
-export interface ICatastrophe {
-  name: CatastropheName;
-  icon: string;
-  killMin: number;
-  killMax: number;
-}
-
 export enum PopulationStatus {
   Extinct = "extinct",
-  Struggling = "struggling",
   Safe = "safe",
+  Struggling = "struggling",
 }
+
+export interface ICatastrophe {
+  icon: string;
+  isPersistent?: boolean;
+  killMax: number;
+  killMin: number;
+  name: CatastropheName;
+}
+
+export const CatastrophePersistence: number = 50;
 
 export enum CatastropheName {
   Climate = "climate-warming",
@@ -25,25 +28,105 @@ export enum CatastropheName {
   Wildfire = "wildfire",
 }
 
-export const CATASTROPHES: ICatastrophe[] = [
-  // https://en.wikipedia.org/wiki/Chicxulub_crater
-  { name: CatastropheName.Meteor, icon: "☄️", killMin: 0, killMax: 75 },
-  // https://en.wikipedia.org/wiki/Black_Death
-  { name: CatastropheName.Plague, icon: "🤢", killMin: 30, killMax: 60 },
-  // https://en.wikipedia.org/wiki/List_of_natural_disasters_by_death_toll
-  { name: CatastropheName.Famine, icon: "🏜", killMin: 10, killMax: 28 },
-  { name: CatastropheName.Ice, icon: "🥶", killMin: 15, killMax: 20 },
-  // http://www.impactlab.org/news-insights/valuing-climate-change-mortality/
-  { name: CatastropheName.Climate, icon: "🌡️", killMin: 16, killMax: 19 },
-  { name: CatastropheName.Flood, icon: "🌊", killMin: 3, killMax: 13 },
-  { name: CatastropheName.Wildfire, icon: "🔥", killMin: 11, killMax: 12 },
-  { name: CatastropheName.Volcano, icon: "🌋", killMin: 1, killMax: 9 },
-  { name: CatastropheName.Cyclone, icon: "🌪", killMin: 6, killMax: 6 },
-  // https://en.m.wikipedia.org/wiki/World_War_II_casualties
-  // https://en.m.wikipedia.org/wiki/Atrocities_in_the_Congo_Free_State
-  { name: CatastropheName.War, icon: "⚔️", killMin: 2, killMax: 3 },
-  // https://rationalwiki.org/wiki/Death_toll_of_Christianity
-  { name: CatastropheName.Religion, icon: "🙏", killMin: 1, killMax: 2 },
+export const Catastrophes: ICatastrophe[] = [
+  {
+    // http://www.impactlab.org/news-insights/valuing-climate-change-mortality/
+    icon: "🌡️",
+    isPersistent: true,
+    killMax: 17,
+    killMin: 12,
+    name: CatastropheName.Climate,
+  },
+  {
+    icon: "🌪",
+    killMax: 9,
+    killMin: 9,
+    name: CatastropheName.Cyclone,
+  },
+  {
+    // https://en.wikipedia.org/wiki/List_of_natural_disasters_by_death_toll
+    icon: "🏜",
+    killMax: 28,
+    killMin: 10,
+    name: CatastropheName.Famine,
+  },
+  {
+    icon: "🌊",
+    killMax: 6,
+    killMin: 3,
+    name: CatastropheName.Flood,
+  },
+  {
+    icon: "🥶",
+    isPersistent: true,
+    killMax: 33,
+    killMin: 11,
+    name: CatastropheName.Ice,
+  },
+  {
+    // https://en.wikipedia.org/wiki/Chicxulub_crater
+    icon: "☄️",
+    killMax: 66,
+    killMin: 4,
+    name: CatastropheName.Meteor,
+  },
+  {
+    // https://en.wikipedia.org/wiki/Black_Death
+    // Black Death killed around 26% of world population
+    icon: "🤢",
+    isPersistent: true,
+    killMax: 26,
+    killMin: 4,
+    name: CatastropheName.Plague,
+  },
+  {
+    // https://rationalwiki.org/wiki/Death_toll_of_Christianity
+    // https://en.wikipedia.org/wiki/Indigenous_peoples_of_the_Americas
+    // https://en.wikipedia.org/wiki/Population_history_of_indigenous_peoples_of_the_Americas
+    // Colonization killed as much as 80-90% of indigenous population
+    // so I estimated it as 10% of world population and blame Christians
+    icon: "🙏",
+    isPersistent: true,
+    killMax: 10,
+    killMin: 2,
+    name: CatastropheName.Religion,
+  },
+  {
+    icon: "🌋",
+    killMax: 6,
+    killMin: 4,
+    name: CatastropheName.Volcano,
+  },
+  {
+    // https://en.m.wikipedia.org/wiki/World_War_II_casualties
+    // https://en.m.wikipedia.org/wiki/Atrocities_in_the_Congo_Free_State
+    // WWII killed 3% of world population
+    icon: "⚔️",
+    isPersistent: true,
+    killMax: 9,
+    killMin: 3,
+    name: CatastropheName.War,
+  },
+  {
+    icon: "🔥",
+    killMax: 4,
+    killMin: 2,
+    name: CatastropheName.Wildfire,
+  },
 ];
 
-export const MAX_CHARS = 36;
+export function getCatastrophe(name: CatastropheName): ICatastrophe | null {
+  return (
+    Catastrophes.find((catastrophe) => {
+      return catastrophe.name === name;
+    }) || null
+  );
+}
+
+export function isYearMillenium(year: number): boolean {
+  if (year === 0) {
+    return false;
+  } else {
+    return year % 1000 === 0;
+  }
+}

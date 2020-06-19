@@ -1,4 +1,4 @@
-import { CatastropheName } from "./common";
+import { CatastropheName, getCatastrophe } from "./common";
 import { stats } from "./stats";
 
 describe("stats", () => {
@@ -18,12 +18,12 @@ describe("stats", () => {
     expect(stats.getAll().catastrophesCount[CatastropheName.War]).toBe(0);
     expect(stats.getAll().catastrophesCount[CatastropheName.Religion]).toBe(0);
     expect(stats.getAll().catastrophesCountSum).toBe(0);
-    stats.reportCatastropheCount(CatastropheName.War);
+    stats.reportCatastrophe(getCatastrophe(CatastropheName.War), 1);
     expect(stats.getAll().catastrophesCount[CatastropheName.War]).toBe(1);
     expect(stats.getAll().catastrophesCount[CatastropheName.Religion]).toBe(0);
     expect(stats.getAll().catastrophesCountSum).toBe(1);
-    stats.reportCatastropheCount(CatastropheName.War);
-    stats.reportCatastropheCount(CatastropheName.Religion);
+    stats.reportCatastrophe(getCatastrophe(CatastropheName.War), 2);
+    stats.reportCatastrophe(getCatastrophe(CatastropheName.Religion), 3);
     expect(stats.getAll().catastrophesCount[CatastropheName.War]).toBe(2);
     expect(stats.getAll().catastrophesCount[CatastropheName.Religion]).toBe(1);
     expect(stats.getAll().catastrophesCountSum).toBe(3);
@@ -31,11 +31,11 @@ describe("stats", () => {
 
   it("should return percentage for a catastrophe", () => {
     expect(stats.getCatastrophePercentage(CatastropheName.War)).toBe(0);
-    stats.reportCatastropheCount(CatastropheName.War);
+    stats.reportCatastrophe(getCatastrophe(CatastropheName.War), 1);
     expect(stats.getCatastrophePercentage(CatastropheName.War)).toBe(100);
-    stats.reportCatastropheCount(CatastropheName.Religion);
+    stats.reportCatastrophe(getCatastrophe(CatastropheName.Religion), 2);
     expect(stats.getCatastrophePercentage(CatastropheName.War)).toBe(50);
-    stats.reportCatastropheCount(CatastropheName.Religion);
+    stats.reportCatastrophe(getCatastrophe(CatastropheName.Religion), 3);
     expect(stats.getCatastrophePercentage(CatastropheName.War)).toBe(33.3);
     expect(stats.getCatastrophePercentage(CatastropheName.Religion)).toBe(66.7);
   });

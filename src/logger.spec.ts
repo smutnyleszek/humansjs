@@ -2,7 +2,7 @@ import { logger } from "./logger";
 
 describe("logger", () => {
   beforeEach(() => {
-    const logEl = document.createElement("section");
+    const logEl = document.createElement("ul");
     logEl.setAttribute("id", "log");
     document.body.appendChild(logEl);
   });
@@ -12,7 +12,7 @@ describe("logger", () => {
     const logEl = document.getElementById("log");
     expect(logEl).not.toBe(null);
     if (logEl !== null) {
-      expect(logEl.textContent).toBe("qwerty\n");
+      expect(logEl.children[0].textContent).toBe("qwerty");
     }
   });
 });

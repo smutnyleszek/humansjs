@@ -1,11 +1,6 @@
 import { generator } from "./generator";
 import { Human } from "./human";
 
-interface IAgeGroupsCount {
-  baby: number;
-  adult: number;
-}
-
 export class Humans {
   private population: Human[] = [];
 
@@ -17,32 +12,6 @@ export class Humans {
     return this.population.length;
   }
 
-  // returns percentage as string to preserve trailing zeros
-  public getAdultsPercentage(): string {
-    const groupsCount = this.getAgeGroupsCount();
-    const totalCount = this.getTotalCount();
-    if (totalCount === 0) {
-      return (0).toFixed(1);
-    } else {
-      return ((groupsCount.adult / totalCount) * 100).toFixed(1);
-    }
-  }
-
-  public getAgeGroupsCount(): IAgeGroupsCount {
-    const ageGroupsCount = {
-      adult: 0,
-      baby: 0,
-    };
-    for (const human of this.population) {
-      if (human.isAdult) {
-        ageGroupsCount.adult++;
-      } else {
-        ageGroupsCount.baby++;
-      }
-    }
-    return ageGroupsCount;
-  }
-
   public growByOneYear(): void {
     for (const human of this.population) {
       human.bumpAge();
@@ -51,13 +20,14 @@ export class Humans {
 
   // immediately removes X random humans from the population
   public killRandomHumans(killCount: number): void {
-    if (killCount >= this.population.length) {
+    if (killCount >= this.getTotalCount()) {
+      // wipe whole population
       this.population = [];
     } else {
       for (let i = killCount; i >= 0; i--) {
-        const populationLength = this.population.length;
-        const randomIndex = Math.floor(Math.random() * populationLength);
-        this.population[randomIndex] = this.population[populationLength - 1];
+        this.population[this.getRandomIndex()] = this.population[
+          this.population.length - 1
+        ];
         this.population.pop();
       }
     }
@@ -66,12 +36,12 @@ export class Humans {
   // removes humans that died from old age from the population
   // returns the number of removed humans
   public buryDead(): number {
-    const populationCountBefore = this.population.length;
+    const populationCountBefore = this.getTotalCount();
     // keep only alive people in population
     this.population = this.population.filter((human: Human): boolean => {
       return human.isAlive;
     });
-    return populationCountBefore - this.population.length;
+    return populationCountBefore - this.getTotalCount();
   }
 
   // finds a random mate for each human and if matched
@@ -80,7 +50,8 @@ export class Humans {
   public makeLove(): number {
     let bornCount = 0;
 
-    if (this.population.length <= 1) {
+    if (this.getTotalCount() <= 1) {
+      // one human can't make babies
       return bornCount;
     } else {
       for (let i = this.population.length - 1; i >= 0; i--) {
@@ -103,11 +74,15 @@ export class Humans {
 
   // returns a random human, potentially other than given index
   public getRandomHuman(otherThan?: number): Human {
-    let randomIndex = generator.getRandomNumber(0, this.population.length - 1);
-    while (randomIndex === otherThan) {
-      randomIndex = generator.getRandomNumber(0, this.population.length - 1);
+    let index = this.getRandomIndex();
+    while (index === otherThan) {
+      index = this.getRandomIndex();
     }
-    return this.population[randomIndex];
+    return this.population[index];
+  }
+
+  private getRandomIndex(): number {
+    return generator.getRandomNumber(0, this.population.length - 1);
   }
 
   // checks if two humans are able to love each other and able to get pregnant

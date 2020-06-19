@@ -1,5 +1,3 @@
-import { MAX_CHARS } from "./common";
-
 class Logger {
   private static readonly safetyOffset: number = 100; // px
   public output: HTMLElement | null = null;
@@ -11,9 +9,6 @@ class Logger {
       const row = window.document.createElement("li");
       // insertAdjacentHTML seems to be a bit faster than appendChild
       row.innerHTML = message;
-      if (row.innerText.length > MAX_CHARS) {
-        console.warn(`Logging overflowing message: "${message}"!`);
-      }
       this.output.insertAdjacentElement("beforeend", row);
       this.scrollToEnd();
     }

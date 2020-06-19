@@ -1,7 +1,8 @@
 import {
-  CATASTROPHES,
+  CatastrophePersistence,
+  Catastrophes,
   ICatastrophe,
-  MAX_CHARS,
+  isYearMillenium,
   PopulationStatus,
 } from "./common";
 import { generator } from "./generator";
@@ -10,18 +11,21 @@ import { logger } from "./logger";
 import { stats } from "./stats";
 import { tracker } from "./tracker";
 
+const MaxChars: number = "↓1234567 ❋123456 ✝1234567 y1234".length;
+
 export class Existence {
   // https://en.wikipedia.org/wiki/Minimum_viable_population
   private static readonly initialPopulation: number = 4169;
-  private static readonly yearTime: number = 0.1 * 1000; // seconds
+  private static readonly yearTime: number = 1 / 6 * 1000;
   // FYI this line is the length of maximum output length
-  private static readonly longLine: string = "-".repeat(MAX_CHARS);
+  private static readonly longLine: string = "-".repeat(MaxChars);
 
-  private targetPopulation: number;
-  private humans: Humans;
-  private lifeIntervalId: number = 0;
   private currentYear: number = 0;
+  private humans: Humans;
   private isLoggingEnabled: boolean = false;
+  private lastYearCatastrophe: ICatastrophe | null = null;
+  private lifeIntervalId: number = 0;
+  private targetPopulation: number;
 
   public constructor(targetPopulation: number, enableLogging: boolean) {
     this.targetPopulation = targetPopulation;
@@ -34,6 +38,7 @@ export class Existence {
     if (this.isLoggingEnabled) {
       logger.log(Existence.longLine);
       logger.log(`${this.humans.getTotalCount()} humans appeared.`);
+      logger.log(Existence.longLine);
     }
   }
 
@@ -45,35 +50,39 @@ export class Existence {
   }
 
   public simulateOneYear(): void {
+    // 1. add one year
     this.bumpYear();
 
     const initialCount = this.humans.getTotalCount();
 
+    // 2. people are born
     const bornCount = this.humans.makeLove();
     stats.reportBornCount(bornCount);
 
+    // 3. people die of old age
     const buriedCount = this.humans.buryDead();
 
-    const appliedCatastrophe = this.applyRandomCatastrophe();
-    if (appliedCatastrophe !== null) {
-      stats.reportCatastropheCount(appliedCatastrophe.name);
-    }
-
+    // 4. a catastrophe could happen
+    const currentCatastrophe = this.checkForCatastrophe();
     const catastropheDeadCount = Math.abs(
       this.humans.getTotalCount() + buriedCount - bornCount - initialCount
     );
+    stats.reportCatastrophe(currentCatastrophe, this.currentYear);
+    // store applied catastrophe for next year
+    this.lastYearCatastrophe = currentCatastrophe;
 
+    // 5. report on what happened
+    stats.reportPopulation(this.humans.getTotalCount());
     if (this.isLoggingEnabled) {
       this.logYear(
         bornCount,
-        appliedCatastrophe,
+        currentCatastrophe,
         buriedCount + catastropheDeadCount
       );
     }
 
-    stats.reportPopulation(this.humans.getTotalCount());
-
-    this.checkGoals();
+    // 6. check if game over
+    this.checkForGameOver();
   }
 
   public getPopulationStatus(): PopulationStatus {
@@ -87,7 +96,7 @@ export class Existence {
   }
 
   public getRandomCatastrophe(): ICatastrophe {
-    return CATASTROPHES[generator.getRandomNumber(0, CATASTROPHES.length - 1)];
+    return Catastrophes[generator.getRandomNumber(0, Catastrophes.length - 1)];
   }
 
   private logYear(
@@ -117,9 +126,6 @@ export class Existence {
       messageParts.push(`${catastrophe.icon}${deadCount}`);
     }
 
-    // adults percentage
-    messageParts.push(`♥️${this.humans.getAdultsPercentage()}%`);
-
     // year
     messageParts.push(`y${this.currentYear}`);
 
@@ -139,24 +145,41 @@ export class Existence {
   }
 
   // kills % of population (if happens)
-  private applyRandomCatastrophe(): ICatastrophe | null {
-    // every catastrophe has 1% chance of happening
-    if (CATASTROPHES.length >= generator.getRandomPercent()) {
-      const catastrophe = this.getRandomCatastrophe();
-      const killPercentage = generator.getRandomNumber(
-        catastrophe.killMin,
-        catastrophe.killMax
-      );
-      this.humans.killRandomHumans(
-        this.humans.getTotalCount() * (killPercentage / 100)
-      );
-      return catastrophe;
+  private checkForCatastrophe(): ICatastrophe | null {
+    if (
+      this.lastYearCatastrophe !== null &&
+      this.lastYearCatastrophe.isPersistent &&
+      CatastrophePersistence >= generator.getRandomPercent()
+    ) {
+      // a persistent catastrophe can last multiple years
+      this.applyCatastrophe(this.lastYearCatastrophe);
+      return this.lastYearCatastrophe;
+    } else if (Catastrophes.length >= generator.getRandomPercent()) {
+      // every catastrophe has 1% chance of happening
+      const randomCatastrophe = this.getRandomCatastrophe();
+      this.applyCatastrophe(randomCatastrophe);
+      return randomCatastrophe;
     } else {
       return null;
     }
   }
 
-  private checkGoals(): void {
+  // drops a catastrophe upon the population
+  private applyCatastrophe(catastrophe: ICatastrophe): void {
+    const killPercentage = generator.getRandomNumber(
+      catastrophe.killMin,
+      catastrophe.killMax
+    );
+    let numberKilled = this.humans.getTotalCount() * (killPercentage / 100);
+    if (isYearMillenium(this.currentYear)) {
+      // double death toll for catastrophe that happens on a millenium
+      // it is possible that humans will get extinct by it
+      numberKilled *= 2;
+    }
+    this.humans.killRandomHumans(numberKilled);
+  }
+
+  private checkForGameOver(): void {
     const status = this.getPopulationStatus();
     if (
       status === PopulationStatus.Extinct ||
@@ -172,6 +195,7 @@ export class Existence {
     const allStats = stats.getAll();
 
     if (this.isLoggingEnabled) {
+      logger.log(Existence.longLine);
       if (status === PopulationStatus.Extinct) {
         logger.log("All humans died.");
       } else if (status === PopulationStatus.Safe) {
@@ -180,6 +204,9 @@ export class Existence {
       }
       logger.log(Existence.longLine);
       logger.log(`Total people born: ${allStats.totalBornCount}.`);
+      for (const achievement of allStats.achievements) {
+        logger.log(achievement);
+      }
     }
 
     tracker.trackGameOver(status, this.currentYear);
