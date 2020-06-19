@@ -70,18 +70,26 @@
         fill: currentColor;
       }
       #log {
+        list-style: none;
+        margin: 0;
+        padding: 0;
         padding-bottom: 2rem;
       }
-      #log div {
+      #log li {
         white-space: nowrap;
       }
-      .n {
+      #log neg,
+      #log pos {
+        display: inline;
+      }
+      #log neg {
         color: crimson;
       }
-      .p {
+      #log pos {
         color: forestgreen;
       }
-      .c {
+      #log em {
+        font-style: normal;
         font-weight: bold;
       }
     </style>
@@ -108,6 +116,6 @@
         >
       </em>
     </header>
-    <section id="log"></section>
+    <ul id="log"></ul>
   </body>
 </html>

@@ -5,17 +5,14 @@ class Logger {
   public output: HTMLElement | null = null;
 
   // adds given message to the body in new line
-  public log(message: string, className?: string): void {
+  public log(message: string): void {
     this.verifyOutput();
-    if (message.length > MAX_CHARS) {
-      console.warn(`Logging overflowing message: "${message}"!`);
-    }
     if (this.output) {
-      const row = window.document.createElement("div");
+      const row = window.document.createElement("li");
       // insertAdjacentHTML seems to be a bit faster than appendChild
       row.innerHTML = message;
-      if (className) {
-        row.classList.add(className);
+      if (row.innerText.length > MAX_CHARS) {
+        console.warn(`Logging overflowing message: "${message}"!`);
       }
       this.output.insertAdjacentElement("beforeend", row);
       this.scrollToEnd();
