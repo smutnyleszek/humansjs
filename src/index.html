@@ -45,7 +45,10 @@
     <style media="screen">
       html {
         font-size: calc(1rem + (2 - 1) * (100vw - 28rem) / (120 - 28));
-        font-family: monospace;
+        font-family: "Input", "Office Code Pro", "Source Code Pro", "Fira Mono",
+    "Inconsolata", "Monaco", "Consolas", "Lucida Console", "Liberation Mono",
+    "DejaVu Sans Mono", monospace;
+        line-height: 1.5rem;
         color: hsl(0, 20%, 20%);
         background: whitesmoke;
       }
@@ -61,16 +64,17 @@
         display: inline-block;
         font-size: 0.8rem;
         padding: 2rem;
-        margin-bottom: 1rem;
       }
       #intro svg {
         width: 20rem;
         color: inherit;
         shape-rendering: geometricPrecision;
         fill: currentColor;
+        max-width: 100%;
       }
       #log {
         list-style: none;
+        line-height: 2rem;
         margin: 0;
         padding: 0;
         padding-bottom: 2rem;

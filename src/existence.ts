@@ -16,7 +16,7 @@ const MaxChars: number = "↓1234567 ❋123456 ✝1234567 y1234".length;
 export class Existence {
   // https://en.wikipedia.org/wiki/Minimum_viable_population
   private static readonly initialPopulation: number = 4169;
-  private static readonly yearTime: number = 1 / 6 * 1000;
+  private static readonly yearTime: number = 1 / 8 * 1000;
   // FYI this line is the length of maximum output length
   private static readonly longLine: string = "-".repeat(MaxChars);
 
