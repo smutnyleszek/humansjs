@@ -13,10 +13,10 @@
   "license": "CC0-1.0",
   "scripts": {
     "test": "jest && npm run test-syntax",
-    "test-syntax": "prettier --check src",
+    "test-syntax": "prettier --check source",
     "test-watch": "jest --watchAll",
-    "start": "parcel -p 2038 src/index.html -d dev",
-    "build-docs": "rm -rf docs && parcel build src/index.html -d docs --public-url ./ --no-cache && npm run copy-static-files",
+    "start": "parcel -p 2038 source/index.html -d dev",
+    "build-docs": "rm -rf docs && parcel build source/index.html -d docs --public-url ./ --no-cache && npm run copy-static-files",
     "copy-static-files": "cp CNAME favicon.png humans.txt LICENSE manifest.json favicon.ico favicon.png robots.txt docs"
   },
   "devDependencies": {
