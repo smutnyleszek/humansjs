@@ -10,7 +10,8 @@ export enum EventId {
 interface IGameOverData {
   catastropheClimate: number;
   catastropheCyclone: number;
-  catastropheFamine: number;
+  catastropheDrought: number;
+  catastropheEarthquake: number;
   catastropheFlood: number;
   catastropheIce: number;
   catastropheMeteor: number;
@@ -18,7 +19,6 @@ interface IGameOverData {
   catastropheReligion: number;
   catastropheVolcano: number;
   catastropheWar: number;
-  catastropheWildfire: number;
   populationMax: number;
   populationMin: number;
   status: PopulationStatus;
@@ -46,7 +46,12 @@ class Tracker {
       catastropheCyclone: stats.getCatastrophePercentage(
         CatastropheName.Cyclone
       ),
-      catastropheFamine: stats.getCatastrophePercentage(CatastropheName.Famine),
+      catastropheDrought: stats.getCatastrophePercentage(
+        CatastropheName.Drought
+      ),
+      catastropheEarthquake: stats.getCatastrophePercentage(
+        CatastropheName.Earthquake
+      ),
       catastropheFlood: stats.getCatastrophePercentage(CatastropheName.Flood),
       catastropheIce: stats.getCatastrophePercentage(CatastropheName.Ice),
       catastropheMeteor: stats.getCatastrophePercentage(CatastropheName.Meteor),
@@ -58,9 +63,6 @@ class Tracker {
         CatastropheName.Volcano
       ),
       catastropheWar: stats.getCatastrophePercentage(CatastropheName.War),
-      catastropheWildfire: stats.getCatastrophePercentage(
-        CatastropheName.Wildfire
-      ),
       populationMax: allStats.highestPopulation,
       populationMin: allStats.lowestPopulation,
       status,

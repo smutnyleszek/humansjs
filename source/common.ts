@@ -17,7 +17,8 @@ export const CatastrophePersistence: number = 50;
 export enum CatastropheName {
   Climate = "climate-warming",
   Cyclone = "cyclone",
-  Famine = "famine",
+  Drought = "drought",
+  Earthquake = "earthquake",
   Flood = "flood",
   Ice = "ice-age",
   Meteor = "meteor",
@@ -25,7 +26,6 @@ export enum CatastropheName {
   Religion = "religion",
   Volcano = "volcano-eruption",
   War = "war",
-  Wildfire = "wildfire",
 }
 
 export const Catastrophes: ICatastrophe[] = [
@@ -38,7 +38,7 @@ export const Catastrophes: ICatastrophe[] = [
     name: CatastropheName.Climate,
   },
   {
-    icon: "🌪",
+    icon: "🌀",
     killMax: 9,
     killMin: 9,
     name: CatastropheName.Cyclone,
@@ -48,7 +48,14 @@ export const Catastrophes: ICatastrophe[] = [
     icon: "🏜",
     killMax: 28,
     killMin: 10,
-    name: CatastropheName.Famine,
+    name: CatastropheName.Drought,
+  },
+  {
+    // https://en.wikipedia.org/wiki/Lists_of_earthquakes
+    icon: "💥",
+    killMax: 4,
+    killMin: 2,
+    name: CatastropheName.Earthquake,
   },
   {
     icon: "🌊",
@@ -106,12 +113,6 @@ export const Catastrophes: ICatastrophe[] = [
     killMax: 9,
     killMin: 3,
     name: CatastropheName.War,
-  },
-  {
-    icon: "🔥",
-    killMax: 4,
-    killMin: 2,
-    name: CatastropheName.Wildfire,
   },
 ];
 

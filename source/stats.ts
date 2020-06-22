@@ -30,7 +30,8 @@ class Stats {
   private catastrophesCount: ICatastrophesCount = {
     "climate-warming": 0,
     cyclone: 0,
-    famine: 0,
+    drought: 0,
+    earthquake: 0,
     flood: 0,
     "ice-age": 0,
     meteor: 0,
@@ -38,7 +39,6 @@ class Stats {
     religion: 0,
     "volcano-eruption": 0,
     war: 0,
-    wildfire: 0,
   };
   private catastrophesCountSum: number = 0;
   private consecutiveCatastropheYears: number = 0;
