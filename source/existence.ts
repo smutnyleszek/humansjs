@@ -11,15 +11,10 @@ import { logger } from "./logger";
 import { stats } from "./stats";
 import { tracker } from "./tracker";
 
-const MaxChars: number = "↓1234567 ❋123456 ✝1234567 y1234".length;
-
 export class Existence {
   // https://en.wikipedia.org/wiki/Minimum_viable_population
   private static readonly initialPopulation: number = 4169;
   private static readonly yearTime: number = (1 / 8) * 1000;
-  // FYI this line is the length of maximum output length
-  private static readonly longLine: string = "-".repeat(MaxChars);
-
   private currentYear: number = 0;
   private humans: Humans;
   private isLoggingEnabled: boolean = false;
@@ -33,12 +28,8 @@ export class Existence {
 
     this.humans = new Humans(Existence.initialPopulation);
 
-    stats.reportBornCount(this.humans.getTotalCount());
-
     if (this.isLoggingEnabled) {
-      logger.log(Existence.longLine);
       logger.log(`${this.humans.getTotalCount()} humans appeared.`);
-      logger.log(Existence.longLine);
     }
   }
 
@@ -57,7 +48,6 @@ export class Existence {
 
     // 2. people are born
     const bornCount = this.humans.makeLove();
-    stats.reportBornCount(bornCount);
 
     // 3. people die of old age
     const buriedCount = this.humans.buryDead();
@@ -195,15 +185,12 @@ export class Existence {
     const allStats = stats.getAll();
 
     if (this.isLoggingEnabled) {
-      logger.log(Existence.longLine);
+      logger.log("Game over!");
       if (status === PopulationStatus.Extinct) {
-        logger.log("All humans died.");
+        logger.log("All humans died…");
       } else if (status === PopulationStatus.Safe) {
-        logger.log(`Human population reached ${this.targetPopulation}.`);
-        logger.log("They're safe now.");
+        logger.log("Humans are safe now.");
       }
-      logger.log(Existence.longLine);
-      logger.log(`Total people born: ${allStats.totalBornCount}.`);
       for (const achievement of allStats.achievements) {
         logger.log(achievement);
       }

@@ -22,7 +22,6 @@ interface IGameOverData {
   populationMax: number;
   populationMin: number;
   status: PopulationStatus;
-  totalBornCount: number;
   totalCatastrophes: number;
   version?: string;
   year: number;
@@ -66,7 +65,6 @@ class Tracker {
       populationMax: allStats.highestPopulation,
       populationMin: allStats.lowestPopulation,
       status,
-      totalBornCount: allStats.totalBornCount,
       totalCatastrophes: allStats.catastrophesCountSum,
       year,
     });

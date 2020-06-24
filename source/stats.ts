@@ -18,7 +18,6 @@ interface IAllStats {
   catastrophesCountSum: number;
   highestPopulation: number;
   lowestPopulation: number;
-  totalBornCount: number;
 }
 
 type ICatastrophesCount = {
@@ -44,7 +43,6 @@ class Stats {
   private consecutiveCatastropheYears: number = 0;
   private highestPopulation: number = 0;
   private lowestPopulation: number = Infinity;
-  private totalBornCount: number = 0;
 
   public constructor() {
     Catastrophes.forEach((catastrophe: ICatastrophe) => {
@@ -59,7 +57,6 @@ class Stats {
       catastrophesCountSum: this.catastrophesCountSum,
       highestPopulation: this.highestPopulation,
       lowestPopulation: this.lowestPopulation,
-      totalBornCount: this.totalBornCount,
     };
   }
 
@@ -74,10 +71,6 @@ class Stats {
         ).toFixed(1)
       );
     }
-  }
-
-  public reportBornCount(count: number): void {
-    this.totalBornCount += count;
   }
 
   // handles consecutiveCatastropheYears and counting catastrophes
@@ -113,7 +106,6 @@ class Stats {
     this.catastrophesCountSum = 0;
     this.highestPopulation = 0;
     this.lowestPopulation = Infinity;
-    this.totalBornCount = 0;
   }
 }
 
