@@ -6,11 +6,11 @@
   "start_url": "/",
   "display": "standalone",
   "orientation": "any",
-  "theme_color": "#000000",
-  "background_color": "#ffffff",
+  "theme_color": "#1f1a14",
+  "background_color": "#ebe6e0",
   "icons": [
     {
-      "src": "favicon.png",
+      "src": "favicon.svg",
       "sizes": "48x48 72x72 96x96 128x128 256x256 512x512",
       "type": "image/png"
     }

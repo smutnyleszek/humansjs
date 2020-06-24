@@ -17,7 +17,7 @@
     "test-watch": "jest --watchAll",
     "start": "parcel -p 2038 source/index.html -d dev",
     "build-docs": "rm -rf docs && parcel build source/index.html -d docs --public-url ./ --no-cache && npm run copy-static-files",
-    "copy-static-files": "cp CNAME favicon.png humans.txt LICENSE manifest.json favicon.ico favicon.png robots.txt docs"
+    "copy-static-files": "cp CNAME humans.txt LICENSE manifest.json robots.txt docs"
   },
   "devDependencies": {
     "@types/jest": "^25.2.2",
