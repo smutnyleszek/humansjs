@@ -7,9 +7,9 @@ import {
 } from "./common";
 import { generator } from "./generator";
 import { Humans } from "./humans";
+import { IncidentName, publish } from "./incidents";
 import { logger } from "./logger";
 import { stats } from "./stats";
-import { tracker } from "./tracker";
 
 export class Existence {
   // https://en.wikipedia.org/wiki/Minimum_viable_population
@@ -57,12 +57,17 @@ export class Existence {
     const catastropheDeadCount = Math.abs(
       this.humans.getTotalCount() + buriedCount - bornCount - initialCount
     );
-    stats.reportCatastrophe(currentCatastrophe, this.currentYear);
+    publish(IncidentName.Catastrophe, {
+      catastrophe: currentCatastrophe,
+      year: this.currentYear,
+    });
     // store applied catastrophe for next year
     this.lastYearCatastrophe = currentCatastrophe;
 
     // 5. report on what happened
-    stats.reportPopulation(this.humans.getTotalCount());
+    publish(IncidentName.Population, {
+      count: this.humans.getTotalCount(),
+    });
     if (this.isLoggingEnabled) {
       this.logYear(
         bornCount,
@@ -185,7 +190,6 @@ export class Existence {
     const allStats = stats.getAll();
 
     if (this.isLoggingEnabled) {
-      logger.log("Game over!");
       if (status === PopulationStatus.Extinct) {
         logger.log("All humans died…");
       } else if (status === PopulationStatus.Safe) {
@@ -194,8 +198,9 @@ export class Existence {
       for (const achievement of allStats.achievements) {
         logger.log(achievement);
       }
+      logger.log("Game over.");
     }
 
-    tracker.trackGameOver(status, this.currentYear);
+    publish(IncidentName.GameOver, { status, year: this.currentYear });
   }
 }

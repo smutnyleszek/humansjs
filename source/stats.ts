@@ -4,6 +4,7 @@ import {
   ICatastrophe,
   isYearMillenium,
 } from "./common";
+import { IncidentName, listen } from "./incidents";
 
 enum Achievement {
   // A catastrophy that happened on millenium and caused more death
@@ -48,6 +49,8 @@ class Stats {
     Catastrophes.forEach((catastrophe: ICatastrophe) => {
       this.catastrophesCount[catastrophe.name] = 0;
     });
+    listen(IncidentName.Catastrophe, this.onCatastrophe.bind(this));
+    listen(IncidentName.Population, this.onPopulation.bind(this));
   }
 
   public getAll(): IAllStats {
@@ -73,11 +76,17 @@ class Stats {
     }
   }
 
+  public clear(): void {
+    Catastrophes.forEach((catastrophe: ICatastrophe) => {
+      this.catastrophesCount[catastrophe.name] = 0;
+    });
+    this.catastrophesCountSum = 0;
+    this.highestPopulation = 0;
+    this.lowestPopulation = Infinity;
+  }
+
   // handles consecutiveCatastropheYears and counting catastrophes
-  public reportCatastrophe(
-    catastrophe: ICatastrophe | null,
-    year: number
-  ): void {
+  private onCatastrophe(catastrophe: ICatastrophe | null, year: number): void {
     if (catastrophe === null) {
       this.consecutiveCatastropheYears = 0;
     } else {
@@ -94,18 +103,9 @@ class Stats {
     }
   }
 
-  public reportPopulation(count: number): void {
+  private onPopulation(count: number): void {
     this.highestPopulation = Math.max(this.highestPopulation, count);
     this.lowestPopulation = Math.min(this.lowestPopulation, count);
-  }
-
-  public clear(): void {
-    Catastrophes.forEach((catastrophe: ICatastrophe) => {
-      this.catastrophesCount[catastrophe.name] = 0;
-    });
-    this.catastrophesCountSum = 0;
-    this.highestPopulation = 0;
-    this.lowestPopulation = Infinity;
   }
 }
 

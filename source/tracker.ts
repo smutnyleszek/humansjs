@@ -1,9 +1,10 @@
 import mixpanel from "mixpanel-browser";
 import * as pack from "../package.json";
 import { CatastropheName, PopulationStatus } from "./common";
+import { IncidentName, listen } from "./incidents";
 import { stats } from "./stats";
 
-export enum EventId {
+enum EventId {
   GameOver = "gameover",
 }
 
@@ -27,16 +28,17 @@ interface IGameOverData {
   year: number;
 }
 
-class Tracker {
+export class Tracker {
   public constructor() {
     mixpanel.init("b70e3845346d947336c4d57f05e75268", {
       disable_persistence: true,
       ip: false,
       track_pageview: false,
     });
+    listen(IncidentName.GameOver, this.onGameOver.bind(this));
   }
 
-  public trackGameOver(status: PopulationStatus, year: number) {
+  private onGameOver(status: PopulationStatus, year: number) {
     const allStats = stats.getAll();
     this.trackEvent(EventId.GameOver, {
       catastropheClimate: stats.getCatastrophePercentage(
@@ -76,5 +78,3 @@ class Tracker {
     mixpanel.track(id, data);
   }
 }
-
-export const tracker = new Tracker();
