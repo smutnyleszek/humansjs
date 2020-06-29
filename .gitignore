@@ -12,3 +12,6 @@ Thumbs.db
 # Parcel
 .cache
 dev
+
+# built app (CI on GitHub does it)
+docs

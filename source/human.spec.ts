@@ -1,4 +1,4 @@
-import { Human } from "./Human";
+import { Human } from "./human";
 
 describe("Human", () => {
   it("should increase age by 1 with bumpAge", () => {
