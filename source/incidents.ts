@@ -4,12 +4,10 @@ interface ICatastropheIncidentData {
   catastrophe: ICatastrophe | null;
   year: number;
 }
-
 interface IGameOverIncidentData {
   status: PopulationStatus;
   year: number;
 }
-
 interface IPopulationIncidentData {
   count: number;
 }

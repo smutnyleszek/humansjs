@@ -29,7 +29,8 @@ export class Existence {
     this.humans = new Humans(Existence.initialPopulation);
 
     if (this.isLoggingEnabled) {
-      logger.log(`${this.humans.getTotalCount()} humans appeared.`);
+      logger.log("Some humans appeared.");
+      this.logYear(0, null, 0);
     }
   }
 
@@ -103,7 +104,9 @@ export class Existence {
 
     // current population
     const totalCount = this.humans.getTotalCount();
-    if (deadCount > bornCount) {
+    if (this.currentYear === 0) {
+      messageParts.push(`&middot;${totalCount}`);
+    } else if (deadCount > bornCount) {
       messageParts.push(`<neg>&darr;${totalCount}</neg>`);
     } else if (bornCount > deadCount) {
       messageParts.push(`<pos>&uarr;${totalCount}</pos>`);
@@ -116,13 +119,13 @@ export class Existence {
 
     // dead count with catastrophe
     if (catastrophe === null) {
-      messageParts.push(`✝${deadCount}`);
+      messageParts.push(`💀${deadCount}`);
     } else {
       messageParts.push(`${catastrophe.icon}${deadCount}`);
     }
 
     // year
-    messageParts.push(`y${this.currentYear}`);
+    messageParts.push(`${this.currentYear}CE`);
 
     // make a year with a catastrophe more pronounced
     if (catastrophe !== null) {
