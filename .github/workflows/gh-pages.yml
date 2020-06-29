@@ -12,16 +12,16 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    - name: Install npm dependencies
+    - name: Install dependencies
       run: npm install
 
-    - name: Run all tests
-      run: npm test
+    # - name: Run all tests
+    #   run: npm test
 
-    - name: Build the app
+    - name: Build public files
       run: npm run build-app
 
-    - name: Deploy
+    - name: Deploy to gh-pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
