@@ -4,7 +4,12 @@ import {
   ICatastrophe,
   isYearMillenium,
 } from "./common";
-import { IncidentName, listen } from "./incidents";
+import {
+  ICatastropheIncidentData,
+  IncidentName,
+  IPopulationIncidentData,
+  listen,
+} from "./incidents";
 
 enum Achievement {
   // A catastrophy that happened on millenium and caused more death
@@ -86,26 +91,26 @@ class Stats {
   }
 
   // handles consecutiveCatastropheYears and counting catastrophes
-  private onCatastrophe(catastrophe: ICatastrophe | null, year: number): void {
-    if (catastrophe === null) {
+  private onCatastrophe(evt: CustomEvent<ICatastropheIncidentData>): void {
+    if (evt.detail.catastrophe === null) {
       this.consecutiveCatastropheYears = 0;
     } else {
-      this.catastrophesCount[catastrophe.name]++;
+      this.catastrophesCount[evt.detail.catastrophe.name]++;
       this.catastrophesCountSum++;
       this.consecutiveCatastropheYears++;
 
       if (this.consecutiveCatastropheYears === 10) {
         this.achievements.add(Achievement.DecadeLongCatastrophe);
       }
-      if (isYearMillenium(year)) {
+      if (isYearMillenium(evt.detail.year)) {
         this.achievements.add(Achievement.MilleniumCatastrophe);
       }
     }
   }
 
-  private onPopulation(count: number): void {
-    this.highestPopulation = Math.max(this.highestPopulation, count);
-    this.lowestPopulation = Math.min(this.lowestPopulation, count);
+  private onPopulation(evt: CustomEvent<IPopulationIncidentData>): void {
+    this.highestPopulation = Math.max(this.highestPopulation, evt.detail.count);
+    this.lowestPopulation = Math.min(this.lowestPopulation, evt.detail.count);
   }
 }
 

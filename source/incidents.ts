@@ -1,14 +1,14 @@
 import { ICatastrophe, PopulationStatus } from "./common";
 
-interface ICatastropheIncidentData {
+export interface ICatastropheIncidentData {
   catastrophe: ICatastrophe | null;
   year: number;
 }
-interface IGameOverIncidentData {
+export interface IGameOverIncidentData {
   status: PopulationStatus;
   year: number;
 }
-interface IPopulationIncidentData {
+export interface IPopulationIncidentData {
   count: number;
 }
 
