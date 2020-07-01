@@ -47,6 +47,9 @@
     "transform": {
       "^.+\\.ts?$": "ts-jest"
     },
+    "moduleNameMapper":{
+      "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/file-mock.js"
+    },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js?|ts?)$",
     "moduleFileExtensions": [
       "ts",
