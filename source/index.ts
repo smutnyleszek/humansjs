@@ -1,10 +1,17 @@
 import { Existence } from "./existence";
 import { Tracker } from "./tracker";
 
+declare global {
+  interface Window {
+    existence: Existence;
+    tracker: Tracker;
+  }
+}
+
 window.onload = (): void => {
   window.setTimeout(() => {
-    const humanExistence = new Existence(1000000, true);
-    humanExistence.startLife();
+    window.existence = new Existence(1000000, true);
+    window.existence.startLife();
   }, 1000);
-  const tracker = new Tracker();
+  window.tracker = new Tracker();
 };

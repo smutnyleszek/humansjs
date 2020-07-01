@@ -7,6 +7,9 @@ import {
 } from "./common";
 import { generator } from "./generator";
 import { Humans } from "./humans";
+import death from "./icons/death.svg";
+import life from "./icons/life.svg";
+import skull from "./icons/skull.svg";
 import { IncidentName, publish } from "./incidents";
 import { logger } from "./logger";
 import { stats } from "./stats";
@@ -115,13 +118,15 @@ export class Existence {
     }
 
     // born count
-    messageParts.push(`❋${bornCount}`);
+    messageParts.push(`<svg><use xlink:href="${life}"/></svg>${bornCount}`);
 
     // dead count with catastrophe
     if (catastrophe === null) {
-      messageParts.push(`💀${deadCount}`);
+      messageParts.push(`<svg><use xlink:href="${death}"/></svg>${deadCount}`);
     } else {
-      messageParts.push(`${catastrophe.icon}${deadCount}`);
+      messageParts.push(
+        `<svg><use xlink:href="${catastrophe.icon}"/></svg>${deadCount}`
+      );
     }
 
     // year
@@ -199,7 +204,7 @@ export class Existence {
         logger.log("Humans are safe now.");
       }
       for (const achievement of allStats.achievements) {
-        logger.log(achievement);
+        logger.log(`<svg><use xlink:href="${skull}"/></svg>${achievement}`);
       }
       logger.log("Game over.");
     }

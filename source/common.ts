@@ -1,3 +1,15 @@
+import climate from "./icons/climate.svg";
+import cyclone from "./icons/cyclone.svg";
+import drought from "./icons/drought.svg";
+import earthquake from "./icons/earthquake.svg";
+import flood from "./icons/flood.svg";
+import ice from "./icons/ice.svg";
+import meteor from "./icons/meteor.svg";
+import plague from "./icons/plague.svg";
+import religion from "./icons/religion.svg";
+import volcano from "./icons/volcano.svg";
+import war from "./icons/war.svg";
+
 export enum PopulationStatus {
   Extinct = "extinct",
   Safe = "safe",
@@ -31,40 +43,40 @@ export enum CatastropheName {
 export const Catastrophes: ICatastrophe[] = [
   {
     // http://www.impactlab.org/news-insights/valuing-climate-change-mortality/
-    icon: "🌡️",
+    icon: climate,
     isPersistent: true,
     killMax: 17,
     killMin: 12,
     name: CatastropheName.Climate,
   },
   {
-    icon: "🌀",
+    icon: cyclone,
     killMax: 9,
     killMin: 9,
     name: CatastropheName.Cyclone,
   },
   {
     // https://en.wikipedia.org/wiki/List_of_natural_disasters_by_death_toll
-    icon: "🏜",
+    icon: drought,
     killMax: 28,
     killMin: 10,
     name: CatastropheName.Drought,
   },
   {
     // https://en.wikipedia.org/wiki/Lists_of_earthquakes
-    icon: "💥",
+    icon: earthquake,
     killMax: 4,
     killMin: 2,
     name: CatastropheName.Earthquake,
   },
   {
-    icon: "🌊",
+    icon: flood,
     killMax: 6,
     killMin: 3,
     name: CatastropheName.Flood,
   },
   {
-    icon: "🥶",
+    icon: ice,
     isPersistent: true,
     killMax: 33,
     killMin: 11,
@@ -72,7 +84,7 @@ export const Catastrophes: ICatastrophe[] = [
   },
   {
     // https://en.wikipedia.org/wiki/Chicxulub_crater
-    icon: "☄️",
+    icon: meteor,
     killMax: 66,
     killMin: 4,
     name: CatastropheName.Meteor,
@@ -80,7 +92,7 @@ export const Catastrophes: ICatastrophe[] = [
   {
     // https://en.wikipedia.org/wiki/Black_Death
     // Black Death killed around 26% of world population
-    icon: "🤢",
+    icon: plague,
     isPersistent: true,
     killMax: 26,
     killMin: 4,
@@ -92,14 +104,14 @@ export const Catastrophes: ICatastrophe[] = [
     // https://en.wikipedia.org/wiki/Population_history_of_indigenous_peoples_of_the_Americas
     // Colonization killed as much as 80-90% of indigenous population
     // so I estimated it as 10% of world population and blame Christians
-    icon: "🙏",
+    icon: religion,
     isPersistent: true,
     killMax: 10,
     killMin: 2,
     name: CatastropheName.Religion,
   },
   {
-    icon: "🌋",
+    icon: volcano,
     killMax: 6,
     killMin: 4,
     name: CatastropheName.Volcano,
@@ -108,7 +120,7 @@ export const Catastrophes: ICatastrophe[] = [
     // https://en.m.wikipedia.org/wiki/World_War_II_casualties
     // https://en.m.wikipedia.org/wiki/Atrocities_in_the_Congo_Free_State
     // WWII killed 3% of world population
-    icon: "⚔️",
+    icon: war,
     isPersistent: true,
     killMax: 9,
     killMin: 3,

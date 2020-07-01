@@ -1,6 +1,6 @@
 {
   "name": "exisim",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "description": "Zero-player human existence simulator",
   "author": {
     "name": "Leszek Pietrzak",
@@ -26,9 +26,13 @@
     "jest": "^26.0.1",
     "mixpanel-browser": "^2.37.0",
     "parcel-bundler": "^1.12.4",
+    "parcel-plugin-svg-sprite": "^1.4.1",
     "prettier": "^2.0.5",
     "ts-jest": "^26.0.0",
     "typescript": "^3.9.2"
+  },
+  "svgSpriteOptions": {
+    "include": ["source/icons/*"]
   },
   "jest": {
     "collectCoverage": true,
