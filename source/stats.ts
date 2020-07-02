@@ -12,10 +12,12 @@ import {
 } from "./incidents";
 
 enum Achievement {
-  // A catastrophy that happened on millenium and caused more death
+  // A catastrophy that happened on millenium and caused more death.
   MilleniumCatastrophe = "A prophecy was fulfilled!",
-  // A catastrophy that lasted a century
-  DecadeLongCatastrophe = "Lived through a decade of aggression.",
+  // A catastrophy that lasted a decade.
+  DecadeLongCatastrophe = "Through a decade of aggression.",
+  // No catastrophe happened for half a century.
+  HalfCenturyFree = "Fifty summers of love.",
 }
 
 interface IAllStats {
@@ -47,6 +49,7 @@ class Stats {
   };
   private catastrophesCountSum: number = 0;
   private consecutiveCatastropheYears: number = 0;
+  private consecutiveFreeYears: number = 0;
   private highestPopulation: number = 0;
   private lowestPopulation: number = Infinity;
 
@@ -94,7 +97,13 @@ class Stats {
   private onCatastrophe(evt: CustomEvent<ICatastropheIncidentData>): void {
     if (evt.detail.catastrophe === null) {
       this.consecutiveCatastropheYears = 0;
+      this.consecutiveFreeYears++;
+
+      if (this.consecutiveFreeYears === 50) {
+        this.achievements.add(Achievement.HalfCenturyFree);
+      }
     } else {
+      this.consecutiveFreeYears = 0;
       this.catastrophesCount[evt.detail.catastrophe.name]++;
       this.catastrophesCountSum++;
       this.consecutiveCatastropheYears++;

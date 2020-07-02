@@ -6,10 +6,11 @@ class Logger {
   public log(message: string): void {
     this.verifyOutput();
     if (this.output) {
+      // insertAdjacentHTML plus appendChild is fastest:
+      // https://jsperf.com/insertadjacenthtml-perf/28
       const row = window.document.createElement("li");
-      // insertAdjacentHTML seems to be a bit faster than appendChild
-      row.innerHTML = message;
-      this.output.insertAdjacentElement("beforeend", row);
+      row.insertAdjacentHTML("beforeend", message);
+      this.output.appendChild(row);
       this.scrollToEnd();
     }
   }
@@ -22,8 +23,11 @@ class Logger {
       window.innerHeight + window.pageYOffset >=
         this.output.offsetHeight - Logger.safetyOffset
     ) {
-      // false means to the bottom of the element
-      this.output.scrollIntoView(false);
+      this.output.scrollIntoView({
+        behavior: "auto",
+        block: "end",
+        inline: "nearest",
+      });
     }
   }
 
