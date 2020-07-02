@@ -65,7 +65,7 @@ export const Catastrophes: ICatastrophe[] = [
   {
     // https://en.wikipedia.org/wiki/Lists_of_earthquakes
     icon: earthquake,
-    killMax: 4,
+    killMax: 8,
     killMin: 2,
     name: CatastropheName.Earthquake,
   },
@@ -86,7 +86,7 @@ export const Catastrophes: ICatastrophe[] = [
     // https://en.wikipedia.org/wiki/Chicxulub_crater
     icon: meteor,
     killMax: 66,
-    killMin: 4,
+    killMin: 6,
     name: CatastropheName.Meteor,
   },
   {
