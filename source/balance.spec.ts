@@ -65,7 +65,7 @@ describe("game balance", () => {
       }
     }
 
-    expect(totalExtinct).toBeGreaterThanOrEqual(75);
+    expect(totalExtinct).toBeGreaterThanOrEqual(70);
     expect(totalSafe).toBeGreaterThanOrEqual(15);
   });
 });
