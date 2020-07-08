@@ -17,7 +17,7 @@
     "test-watch": "jest --watchAll",
     "start": "parcel -p 2038 source/index.html -d dev",
     "build-app": "rm -rf public && parcel build source/index.html -d public --public-url ./ --no-cache && npm run copy-static-files",
-    "copy-static-files": "cp humans.txt LICENSE manifest.json robots.txt public"
+    "copy-static-files": "cp humans.txt LICENSE manifest.json robots.txt sitemap.xml public"
   },
   "devDependencies": {
     "@types/jest": "^25.2.2",
