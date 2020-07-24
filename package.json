@@ -17,7 +17,7 @@
     "test-watch": "jest --watchAll",
     "start": "parcel -p 2038 source/index.html -d dev",
     "build-app": "rm -rf public && parcel build source/index.html -d public --public-url ./ --no-cache && npm run copy-static-files",
-    "copy-static-files": "cp humans.txt LICENSE manifest.json robots.txt sitemap.xml public"
+    "copy-static-files": "cp humans.txt LICENSE manifest.json robots.txt sitemap.xml source/favicons/exisim-logo.svg public"
   },
   "devDependencies": {
     "@types/jest": "^25.2.2",
@@ -32,7 +32,9 @@
     "typescript": "^3.9.2"
   },
   "svgSpriteOptions": {
-    "include": ["source/icons/*"]
+    "include": [
+      "source/icons/*"
+    ]
   },
   "jest": {
     "collectCoverage": true,
@@ -47,7 +49,7 @@
     "transform": {
       "^.+\\.ts?$": "ts-jest"
     },
-    "moduleNameMapper":{
+    "moduleNameMapper": {
       "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/file-mock.js"
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js?|ts?)$",
