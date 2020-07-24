@@ -1,9 +1,20 @@
+import { simulationYearTime } from "./common";
+import { IncidentName, listen } from "./incidents";
+
 class Logger {
-  private static readonly safetyOffset: number = 100; // px
   public output: HTMLElement | null = null;
+  private scrollingTimeoutId: number = 0;
+  private rowHeight: number = 0;
+  private readonly isPlayingClassName: string = "is-playing";
+  private readonly isScrollingClassName: string = "is-scrolling";
+
+  public constructor() {
+    listen(IncidentName.GameStart, this.onGameStart.bind(this));
+    listen(IncidentName.GameOver, this.onGameOver.bind(this));
+  }
 
   // adds given message to the body in new line
-  public log(message: string): void {
+  public log(message: string, withScroll: boolean = true): void {
     this.verifyOutput();
     if (this.output) {
       // insertAdjacentHTML plus appendChild is fastest:
@@ -11,7 +22,10 @@ class Logger {
       const row = window.document.createElement("li");
       row.insertAdjacentHTML("beforeend", message);
       this.output.appendChild(row);
-      this.scrollToEnd();
+      if (withScroll) {
+        this.rowHeight = row.offsetHeight;
+        this.scrollToEnd();
+      }
     }
   }
 
@@ -20,14 +34,17 @@ class Logger {
       this.output &&
       this.output.scrollIntoView &&
       // autoscroll if scrolled to almost end of page
-      window.innerHeight + window.pageYOffset >=
-        this.output.offsetHeight - Logger.safetyOffset
+      window.document.body.offsetHeight -
+        (window.pageYOffset + window.innerHeight) <=
+        // safety offset is two rows
+        this.rowHeight * 2
     ) {
       this.output.scrollIntoView({
         behavior: "auto",
         block: "end",
         inline: "nearest",
       });
+      this.onScroll();
     }
   }
 
@@ -35,6 +52,27 @@ class Logger {
     if (!this.output) {
       this.output = document.getElementById("log");
     }
+  }
+
+  private onGameStart(): void {
+    window.document.body.classList.add(this.isPlayingClassName);
+  }
+
+  private onGameOver(): void {
+    window.document.body.classList.remove(this.isPlayingClassName);
+  }
+
+  private onScroll(): void {
+    window.document.body.classList.add(this.isScrollingClassName);
+    window.clearTimeout(this.scrollingTimeoutId);
+    this.scrollingTimeoutId = window.setTimeout(
+      this.onAfterScroll.bind(this),
+      simulationYearTime * 2
+    );
+  }
+
+  private onAfterScroll(): void {
+    window.document.body.classList.remove(this.isScrollingClassName);
   }
 }
 

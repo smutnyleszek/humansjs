@@ -44,7 +44,7 @@
         font-size: inherit;
       }
       html {
-        font-size: calc(1rem + (2 - 1) * (100vw - 28rem) / (120 - 28));
+        font-size: calc(1.2rem + (2 - 1.2) * (100vw - 28rem) / (120 - 28));
         font-family: "Input", "Office Code Pro", "Source Code Pro", "Fira Mono",
           "Inconsolata", "Monaco", "Consolas", "Lucida Console",
           "Liberation Mono", "DejaVu Sans Mono", monospace;
@@ -66,6 +66,24 @@
         margin: 0;
         padding: 0;
         text-align: center;
+      }
+      #status {
+        position: fixed;
+        z-index: -1;
+        top: 1rem;
+        right: 1rem;
+        line-height: 0.5;
+      }
+      #status figure {
+        transition: all 1s;
+        opacity: 0;
+        margin: 0;
+        padding: 0;
+        color: inherit;
+      }
+      body.is-playing #status-playing,
+      body.is-scrolling #status-scrolling {
+        opacity: 0.5;
       }
       #intro {
         display: inline-block;
@@ -132,6 +150,10 @@
         >
       </em>
     </header>
+    <aside id="status">
+      <figure id="status-playing">&middot;</figure>
+      <figure id="status-scrolling">&middot;</figure>
+    </aside>
     <ul id="log">
       <li>Loading…</li>
     </ul>

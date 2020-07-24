@@ -14,12 +14,14 @@ export interface IPopulationIncidentData {
 
 export enum IncidentName {
   Catastrophe = "catastrophe-occurred",
+  GameStart = "game-start",
   GameOver = "game-over",
   Population = "total-population-count-changed",
 }
 
 type IncidentData =
   | ICatastropheIncidentData
+  | null
   | IGameOverIncidentData
   | IPopulationIncidentData;
 

@@ -4,6 +4,7 @@ import {
   ICatastrophe,
   isYearMillenium,
   PopulationStatus,
+  simulationYearTime,
 } from "./common";
 import { generator } from "./generator";
 import { Humans } from "./humans";
@@ -16,8 +17,7 @@ import { stats } from "./stats";
 
 export class Existence {
   // https://en.wikipedia.org/wiki/Minimum_viable_population
-  private static readonly initialPopulation: number = 4169;
-  private static readonly yearTime: number = (1 / 8) * 1000;
+  private readonly initialPopulation: number = 4169;
   private currentYear: number = 0;
   private humans: Humans;
   private isLoggingEnabled: boolean = false;
@@ -29,10 +29,10 @@ export class Existence {
     this.targetPopulation = targetPopulation;
     this.isLoggingEnabled = enableLogging;
 
-    this.humans = new Humans(Existence.initialPopulation);
+    this.humans = new Humans(this.initialPopulation);
 
     if (this.isLoggingEnabled) {
-      logger.log("Some humans appeared.");
+      logger.log("Some humans appeared.", false);
       this.logYear(0, null, 0);
     }
   }
@@ -40,8 +40,9 @@ export class Existence {
   public startLife(): void {
     this.lifeIntervalId = window.setInterval(
       this.simulateOneYear.bind(this),
-      Existence.yearTime
+      simulationYearTime
     );
+    publish(IncidentName.GameStart, null);
   }
 
   public simulateOneYear(): void {

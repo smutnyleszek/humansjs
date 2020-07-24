@@ -10,6 +10,8 @@ import religion from "./icons/religion.svg";
 import volcano from "./icons/volcano.svg";
 import war from "./icons/war.svg";
 
+export const simulationYearTime = (1 / 8) * 1000;
+
 export enum PopulationStatus {
   Extinct = "extinct",
   Safe = "safe",
