@@ -10,9 +10,9 @@
   "background_color": "#ebe6e0",
   "icons": [
     {
-      "src": "favicon.svg",
+      "src": "https://exisim.es/favicons/exisim-logo.svg",
       "sizes": "48x48 72x72 96x96 128x128 256x256 512x512",
-      "type": "image/png"
+      "type": "image/svg+xml"
     }
   ],
   "prefer_related_applications": false

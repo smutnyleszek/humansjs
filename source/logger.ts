@@ -5,6 +5,8 @@ class Logger {
   public output: HTMLElement | null = null;
   private scrollingTimeoutId: number = 0;
   private rowHeight: number = 0;
+  // flag to make sure it scrolls to end at the beginnig (bug on small screens)
+  private isFirstTime: boolean = true;
   private readonly isPlayingClassName: string = "is-playing";
   private readonly isScrollingClassName: string = "is-scrolling";
 
@@ -34,11 +36,9 @@ class Logger {
       this.output &&
       this.output.scrollIntoView &&
       // autoscroll if scrolled to almost end of page
-      window.document.body.offsetHeight -
-        (window.pageYOffset + window.innerHeight) <=
-        // safety offset is two rows
-        this.rowHeight * 2
+      (this.isNearEnd() || this.isFirstTime)
     ) {
+      this.isFirstTime = false;
       this.output.scrollIntoView({
         behavior: "auto",
         block: "end",
@@ -46,6 +46,14 @@ class Logger {
       });
       this.onScroll();
     }
+  }
+
+  private isNearEnd(): boolean {
+    return (
+      window.document.body.offsetHeight -
+        (window.pageYOffset + window.innerHeight) <=
+      this.rowHeight * 2
+    );
   }
 
   private verifyOutput(): void {
