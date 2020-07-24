@@ -13,6 +13,15 @@ html {
   line-height: 2;
   color: hsl(30, 20%, 10%);
   background: hsl(30, 20%, 90%);
+  transition: color 0.5s, background 0.5s;
+}
+
+/* dark mode */
+@media (prefers-color-scheme: dark) {
+  html {
+    color: hsl(30, 20%, 90%);
+    background: hsl(30, 20%, 10%);
+  }
 }
 
 a {
@@ -90,6 +99,7 @@ body.is-scrolling #status-scrolling {
   display: inline;
 }
 
+/* NOTE: neg and pos colors need to work over dark and light background */
 #log neg {
   color: hsl(350, 100%, 40%);
 }
