@@ -1,3 +1,15 @@
+/* Config */
+
+:root {
+  --c-olive: hsl(75, 100%, 25%);
+  --c-christi: hsl(75, 80%, 35%);
+  --c-monza: hsl(350, 100%, 40%);
+  --c-brick-red: hsl(350, 60%, 50%);
+  --c-zeus: hsl(30, 20%, 10%);
+  --c-cement: hsl(30, 20%, 50%);
+  --c-pampas: hsl(30, 20%, 90%);
+}
+
 /* General styles and normalizations */
 
 * {
@@ -11,17 +23,9 @@ html {
     "Inconsolata", "Monaco", "Consolas", "Lucida Console", "Liberation Mono",
     "DejaVu Sans Mono", monospace;
   line-height: 2;
-  color: hsl(30, 20%, 10%);
-  background: hsl(30, 20%, 90%);
+  color: var(--c-zeus);
+  background: var(--c-pampas);
   transition: color 0.5s, background 0.5s;
-}
-
-/* dark mode */
-@media (prefers-color-scheme: dark) {
-  html {
-    color: hsl(30, 20%, 90%);
-    background: hsl(30, 20%, 10%);
-  }
 }
 
 a {
@@ -58,12 +62,12 @@ body {
   opacity: 0;
   margin: 0;
   padding: 0;
-  color: inherit;
+  color: var(--c-cement);
 }
 
 body.is-playing #status-playing,
 body.is-scrolling #status-scrolling {
-  opacity: 0.5;
+  opacity: 1;
 }
 
 /* Intro component */
@@ -99,13 +103,12 @@ body.is-scrolling #status-scrolling {
   display: inline;
 }
 
-/* NOTE: neg and pos colors need to work over dark and light background */
 #log neg {
-  color: hsl(350, 100%, 40%);
+  color: var(--c-monza);
 }
 
 #log pos {
-  color: hsl(75, 100%, 25%);
+  color: var(--c-olive);
 }
 
 #log em {
@@ -120,4 +123,21 @@ body.is-scrolling #status-scrolling {
   display: inline-block;
   vertical-align: -0.1em;
   margin-right: 0.1em;
+}
+
+/* Dark mode */
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color: var(--c-pampas);
+    background: var(--c-zeus);
+  }
+
+  #log neg {
+    color: var(--c-brick-red);
+  }
+
+  #log pos {
+    color: var(--c-olive-dark);
+  }
 }
