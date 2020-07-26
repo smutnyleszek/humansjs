@@ -196,20 +196,21 @@ export class Existence {
 
   private gameOver(): void {
     const status = this.getPopulationStatus();
-    const allStats = stats.getAll();
+    publish(IncidentName.GameOver, { status, year: this.currentYear });
 
     if (this.isLoggingEnabled) {
+      const allStats = stats.getAll();
       if (status === PopulationStatus.Extinct) {
         logger.log("All humans died…");
       } else if (status === PopulationStatus.Safe) {
         logger.log("Humans are safe now");
       }
       for (const achievement of allStats.achievements) {
-        logger.log(`<svg><use xlink:href="${skull}"/></svg>${achievement}`);
+        logger.log(
+          `<svg class="skull"><use xlink:href="${skull}"/></svg>${achievement}`
+        );
       }
       logger.log("Game over");
     }
-
-    publish(IncidentName.GameOver, { status, year: this.currentYear });
   }
 }

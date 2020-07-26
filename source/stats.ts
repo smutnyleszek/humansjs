@@ -3,9 +3,11 @@ import {
   Catastrophes,
   ICatastrophe,
   isYearMillenium,
+  PopulationStatus,
 } from "./common";
 import {
   ICatastropheIncidentData,
+  IGameOverIncidentData,
   IncidentName,
   IPopulationIncidentData,
   listen,
@@ -18,7 +20,40 @@ enum Achievement {
   DecadeLongCatastrophe = "Through a decade of aggression",
   // No catastrophe happened for half a century.
   HalfCenturyFree = "Fifty summers of love",
+  SafeQuick = "Life cannot be contained",
+  SafeSlow = "Reaching the stars from the mountain of bodies",
+  SafeFromLow = "The last humans on earth",
+  ExtinctQuick = "A short expiration date",
+  ExtinctSlow = "May we live long and die out",
+  ExtinctFromHigh = "The mighty fall of the human leviathan",
+  TopCatastropheClimate = "Act as if the house is on fire, because it is",
+  TopCatastropheCyclone = "The downward spiral nightmare",
+  TopCatastropheDrought = "The earth was thirsty, but only the human blood flowed",
+  TopCatastropheEarthquake = "They fell screaming into the depths of the chasm",
+  TopCatastropheFlood = "Drowned by the life giving fluid",
+  TopCatastropheIce = "Trapped under ice",
+  TopCatastropheMeteor = "A death from outer space",
+  TopCatastrophePlague = "A cure for the cancer of this planet",
+  TopCatastropheReligion = "His face was completely covered in blood, except where it had been partially washed clean by his tears",
+  TopCatastropheVolcano = "Hot blood from the planet's wound",
+  TopCatastropheWar = "When you fight fire with fire, fire is guaranteed to win",
 }
+
+// NOTE: The count of persistent catastrophes is growing more rapidly,
+// thus making it very hard for non-persistent catastrophes to be popular.
+const TopCatastropheMap = new Map([
+  [CatastropheName.Climate, Achievement.TopCatastropheClimate],
+  [CatastropheName.Cyclone, Achievement.TopCatastropheCyclone],
+  [CatastropheName.Drought, Achievement.TopCatastropheDrought],
+  [CatastropheName.Earthquake, Achievement.TopCatastropheEarthquake],
+  [CatastropheName.Flood, Achievement.TopCatastropheFlood],
+  [CatastropheName.Ice, Achievement.TopCatastropheIce],
+  [CatastropheName.Meteor, Achievement.TopCatastropheMeteor],
+  [CatastropheName.Plague, Achievement.TopCatastrophePlague],
+  [CatastropheName.Religion, Achievement.TopCatastropheReligion],
+  [CatastropheName.Volcano, Achievement.TopCatastropheVolcano],
+  [CatastropheName.War, Achievement.TopCatastropheWar],
+]);
 
 interface IAllStats {
   achievements: string[];
@@ -26,13 +61,14 @@ interface IAllStats {
   catastrophesCountSum: number;
   highestPopulation: number;
   lowestPopulation: number;
+  topCatastrophe: CatastropheName;
 }
 
 type ICatastrophesCount = {
   [K in CatastropheName]: number;
 };
 
-class Stats {
+export class Stats {
   private achievements: Set<Achievement> = new Set();
   private catastrophesCount: ICatastrophesCount = {
     "climate-warming": 0,
@@ -59,15 +95,22 @@ class Stats {
     });
     listen(IncidentName.Catastrophe, this.onCatastrophe.bind(this));
     listen(IncidentName.Population, this.onPopulation.bind(this));
+    listen(IncidentName.GameOver, this.onGameOver.bind(this));
   }
 
   public getAll(): IAllStats {
+    const topCatastrophe = this.getTopCatastrophe();
+    let topCatastropheName = CatastropheName.War;
+    if (topCatastrophe !== null) {
+      topCatastropheName = topCatastrophe.name;
+    }
     return {
       achievements: Array.from(this.achievements),
       catastrophesCount: this.catastrophesCount,
       catastrophesCountSum: this.catastrophesCountSum,
       highestPopulation: this.highestPopulation,
       lowestPopulation: this.lowestPopulation,
+      topCatastrophe: topCatastropheName,
     };
   }
 
@@ -82,6 +125,18 @@ class Stats {
         ).toFixed(1)
       );
     }
+  }
+
+  public getTopCatastrophe(): ICatastrophe | null {
+    let top: ICatastrophe | null = null;
+    let topCount = -1;
+    Catastrophes.forEach((catastrophe: ICatastrophe) => {
+      if (this.catastrophesCount[catastrophe.name] > topCount) {
+        topCount = this.catastrophesCount[catastrophe.name];
+        top = catastrophe;
+      }
+    });
+    return top;
   }
 
   public clear(): void {
@@ -120,6 +175,42 @@ class Stats {
   private onPopulation(evt: CustomEvent<IPopulationIncidentData>): void {
     this.highestPopulation = Math.max(this.highestPopulation, evt.detail.count);
     this.lowestPopulation = Math.min(this.lowestPopulation, evt.detail.count);
+  }
+
+  private onGameOver(evt: CustomEvent<IGameOverIncidentData>) {
+    if (evt.detail.status === PopulationStatus.Extinct) {
+      if (evt.detail.year <= 500) {
+        this.achievements.add(Achievement.ExtinctQuick);
+      }
+      if (evt.detail.year >= 6000) {
+        this.achievements.add(Achievement.ExtinctSlow);
+      }
+      if (this.highestPopulation >= 660000) {
+        this.achievements.add(Achievement.ExtinctFromHigh);
+      }
+    }
+
+    if (evt.detail.status === PopulationStatus.Safe) {
+      if (evt.detail.year <= 500) {
+        this.achievements.add(Achievement.SafeQuick);
+      }
+      if (evt.detail.year >= 6000) {
+        this.achievements.add(Achievement.SafeSlow);
+      }
+      if (this.lowestPopulation <= 66) {
+        this.achievements.add(Achievement.SafeFromLow);
+      }
+    }
+
+    const topCatastrophe = this.getTopCatastrophe();
+    if (topCatastrophe !== null) {
+      const topCatastropheAchievement = TopCatastropheMap.get(
+        topCatastrophe.name
+      );
+      if (topCatastropheAchievement) {
+        this.achievements.add(topCatastropheAchievement);
+      }
+    }
   }
 }
 

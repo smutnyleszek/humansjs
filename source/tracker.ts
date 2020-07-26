@@ -9,20 +9,10 @@ enum EventId {
 }
 
 interface IGameOverData {
-  catastropheClimate: number;
-  catastropheCyclone: number;
-  catastropheDrought: number;
-  catastropheEarthquake: number;
-  catastropheFlood: number;
-  catastropheIce: number;
-  catastropheMeteor: number;
-  catastrophePlague: number;
-  catastropheReligion: number;
-  catastropheVolcano: number;
-  catastropheWar: number;
   populationMax: number;
   populationMin: number;
   status: PopulationStatus;
+  topCatastrophe: CatastropheName;
   totalCatastrophes: number;
   version?: string;
   year: number;
@@ -41,32 +31,10 @@ export class Tracker {
   private onGameOver(evt: CustomEvent<IGameOverIncidentData>) {
     const allStats = stats.getAll();
     this.trackEvent(EventId.GameOver, {
-      catastropheClimate: stats.getCatastrophePercentage(
-        CatastropheName.Climate
-      ),
-      catastropheCyclone: stats.getCatastrophePercentage(
-        CatastropheName.Cyclone
-      ),
-      catastropheDrought: stats.getCatastrophePercentage(
-        CatastropheName.Drought
-      ),
-      catastropheEarthquake: stats.getCatastrophePercentage(
-        CatastropheName.Earthquake
-      ),
-      catastropheFlood: stats.getCatastrophePercentage(CatastropheName.Flood),
-      catastropheIce: stats.getCatastrophePercentage(CatastropheName.Ice),
-      catastropheMeteor: stats.getCatastrophePercentage(CatastropheName.Meteor),
-      catastrophePlague: stats.getCatastrophePercentage(CatastropheName.Plague),
-      catastropheReligion: stats.getCatastrophePercentage(
-        CatastropheName.Religion
-      ),
-      catastropheVolcano: stats.getCatastrophePercentage(
-        CatastropheName.Volcano
-      ),
-      catastropheWar: stats.getCatastrophePercentage(CatastropheName.War),
       populationMax: allStats.highestPopulation,
       populationMin: allStats.lowestPopulation,
       status: evt.detail.status,
+      topCatastrophe: allStats.topCatastrophe,
       totalCatastrophes: allStats.catastrophesCountSum,
       year: evt.detail.year,
     });
