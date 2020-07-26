@@ -8,6 +8,7 @@ class Logger {
   // flag to make sure it scrolls to end at the beginnig (bug on small screens)
   private isFirstTime: boolean = true;
   private readonly isPlayingClassName: string = "is-playing";
+  private readonly isOverClassName: string = "is-over";
   private readonly isScrollingClassName: string = "is-scrolling";
 
   public constructor() {
@@ -68,6 +69,7 @@ class Logger {
 
   private onGameOver(): void {
     window.document.body.classList.remove(this.isPlayingClassName);
+    window.document.body.classList.add(this.isOverClassName);
   }
 
   private onScroll(): void {

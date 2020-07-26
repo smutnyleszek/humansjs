@@ -3,9 +3,9 @@
 :root {
   --c-olive: hsl(75, 100%, 25%);
   --c-christi: hsl(75, 80%, 35%);
-  --c-monza: hsl(350, 100%, 40%);
-  --c-brick-red: hsl(350, 60%, 50%);
-  --c-zeus: hsl(30, 20%, 10%);
+  --c-venetian-red: hsl(350, 100%, 40%);
+  --c-old-rose: hsl(350, 60%, 50%);
+  --c-wood-bark: hsl(30, 20%, 10%);
   --c-cement: hsl(30, 20%, 50%);
   --c-pampas: hsl(30, 20%, 90%);
 }
@@ -23,7 +23,7 @@ html {
     "Inconsolata", "Monaco", "Consolas", "Lucida Console", "Liberation Mono",
     "DejaVu Sans Mono", monospace;
   line-height: 2;
-  color: var(--c-zeus);
+  color: var(--c-wood-bark);
   background: var(--c-pampas);
   transition: color 0.5s, background 0.5s;
 }
@@ -55,6 +55,7 @@ body {
   top: 1rem;
   right: 1rem;
   line-height: 0.5;
+  pointer-events: none;
 }
 
 #status figure {
@@ -104,7 +105,7 @@ body.is-scrolling #status-scrolling {
 }
 
 #log neg {
-  color: var(--c-monza);
+  color: var(--c-venetian-red);
 }
 
 #log pos {
@@ -125,19 +126,89 @@ body.is-scrolling #status-scrolling {
   margin-right: 0.1em;
 }
 
+/* Outro component */
+
+#outro {
+  height: auto;
+  max-height: 0;
+  padding-bottom: 0;
+  overflow: hidden;
+  transition: all 1s;
+}
+
+#outro button {
+  display: block;
+  cursor: pointer;
+  visibility: hidden;
+  transition: opacity, visibility 1s;
+  opacity: 0;
+  margin: 0 auto;
+  padding: 0;
+  background: var(--c-wood-bark);
+  border-radius: 0.35rem;
+  border-width: 0;
+}
+
+#outro button label {
+  pointer-events: none;
+  display: inline-block;
+  padding: 0.125rem 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.3rem;
+  color: var(--c-pampas);
+  background-color: var(--c-wood-bark);
+  box-shadow: 0 0 0 0.1rem var(--c-pampas);
+}
+
+#outro button:hover {
+  margin-top: 0.1rem;
+}
+
+#outro button:hover label {
+  margin-bottom: 0.4rem;
+}
+
+#outro button:active {
+  margin-top: 0.2rem;
+}
+
+#outro button:active label {
+  margin-bottom: 0.3rem;
+}
+
+body.is-over #outro {
+  max-height: 100vh;
+  padding-bottom: 2rem;
+}
+
+body.is-over #outro button {
+  opacity: 1;
+  visibility: visible;
+}
+
 /* Dark mode */
 
 @media (prefers-color-scheme: dark) {
   html {
     color: var(--c-pampas);
-    background: var(--c-zeus);
+    background: var(--c-wood-bark);
   }
 
   #log neg {
-    color: var(--c-brick-red);
+    color: var(--c-old-rose);
   }
 
   #log pos {
-    color: var(--c-olive-dark);
+    color: var(--c-christi);
+  }
+
+  #outro button {
+    background: var(--c-pampas);
+  }
+
+  #outro button label {
+    color: var(--c-wood-bark);
+    background-color: var(--c-pampas);
+    box-shadow: 0 0 0 0.1rem var(--c-wood-bark);
   }
 }
