@@ -12,12 +12,12 @@ import {
 } from "./incidents";
 
 enum Achievement {
-  // A catastrophy that happened on millenium and caused more death.
-  MilleniumCatastrophe = "A prophecy was fulfilled!",
-  // A catastrophy that lasted a decade.
-  DecadeLongCatastrophe = "Through a decade of aggression.",
+  // A catastrophe that happened on a millenium.
+  MilleniumCatastrophe = "A prophecy was fulfilled",
+  // A catastrophe that lasted a decade.
+  DecadeLongCatastrophe = "Through a decade of aggression",
   // No catastrophe happened for half a century.
-  HalfCenturyFree = "Fifty summers of love.",
+  HalfCenturyFree = "Fifty summers of love",
 }
 
 interface IAllStats {

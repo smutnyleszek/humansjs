@@ -32,7 +32,7 @@ export class Existence {
     this.humans = new Humans(this.initialPopulation);
 
     if (this.isLoggingEnabled) {
-      logger.log("Some humans appeared.", false);
+      logger.log("Some humans appeared", false);
       this.logYear(0, null, 0);
     }
   }
@@ -202,12 +202,12 @@ export class Existence {
       if (status === PopulationStatus.Extinct) {
         logger.log("All humans died…");
       } else if (status === PopulationStatus.Safe) {
-        logger.log("Humans are safe now.");
+        logger.log("Humans are safe now");
       }
       for (const achievement of allStats.achievements) {
         logger.log(`<svg><use xlink:href="${skull}"/></svg>${achievement}`);
       }
-      logger.log("Game over.");
+      logger.log("Game over");
     }
 
     publish(IncidentName.GameOver, { status, year: this.currentYear });
