@@ -106,18 +106,6 @@ export class Existence {
   ): void {
     const messageParts: any[] = [];
 
-    // current population
-    const totalCount = this.humans.getTotalCount();
-    if (this.currentYear === 0) {
-      messageParts.push(`&middot;${totalCount}`);
-    } else if (deadCount > bornCount) {
-      messageParts.push(`<neg>&darr;${totalCount}</neg>`);
-    } else if (bornCount > deadCount) {
-      messageParts.push(`<pos>&uarr;${totalCount}</pos>`);
-    } else {
-      messageParts.push(`&middot;${totalCount}`);
-    }
-
     // born count
     messageParts.push(`<svg><use xlink:href="${life}"/></svg>${bornCount}`);
 
@@ -128,6 +116,18 @@ export class Existence {
       messageParts.push(
         `<svg><use xlink:href="${catastrophe.icon}"/></svg>${deadCount}`
       );
+    }
+
+    // current population
+    const totalCount = this.humans.getTotalCount();
+    if (this.currentYear === 0) {
+      messageParts.push(`&middot;${totalCount}`);
+    } else if (deadCount > bornCount) {
+      messageParts.push(`<neg><i>&darr;</i>${totalCount}</neg>`);
+    } else if (bornCount > deadCount) {
+      messageParts.push(`<pos><i>&uarr;</i>${totalCount}</pos>`);
+    } else {
+      messageParts.push(`<i>&middot;</i>${totalCount}`);
     }
 
     // year

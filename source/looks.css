@@ -8,6 +8,9 @@
   --c-wood-bark: hsl(30, 20%, 10%);
   --c-cement: hsl(30, 20%, 50%);
   --c-pampas: hsl(30, 20%, 90%);
+  --s-leading: 1.375rem;
+  --s-leading-double: calc(1.375rem * 2);
+  --s-leading-half: calc(1.375rem * 0.5);
 }
 
 /* General styles and normalizations */
@@ -22,7 +25,7 @@ html {
   font-family: "Input", "Office Code Pro", "Source Code Pro", "Fira Mono",
     "Inconsolata", "Monaco", "Consolas", "Lucida Console", "Liberation Mono",
     "DejaVu Sans Mono", monospace;
-  line-height: 2;
+  line-height: var(--s-leading);
   color: var(--c-wood-bark);
   background: var(--c-pampas);
   transition: color 0.5s, background 0.5s;
@@ -31,11 +34,11 @@ html {
 a {
   color: inherit;
   text-decoration: none;
-  border-bottom: 0.1rem solid currentColor;
+  border-bottom: 0.1rem dotted transparent;
 }
 
 a:hover {
-  border-bottom-style: dotted;
+  border-bottom-color: currentColor;
 }
 
 svg {
@@ -54,9 +57,9 @@ body {
 #status {
   position: fixed;
   z-index: -1;
-  top: 1rem;
-  right: 1rem;
-  line-height: 0.5;
+  top: var(--s-leading);
+  right: var(--s-leading);
+  line-height: var(--s-leading-half);
   pointer-events: none;
 }
 
@@ -77,15 +80,24 @@ body.is-scrolling #status-scrolling {
 
 #intro {
   display: inline-block;
-  padding: 2rem 1rem;
+  padding: var(--s-leading-double) var(--s-leading-half);
+}
+
+#intro p {
+  font-weight: bold;
+  margin: 0;
+}
+
+#intro p span {
+  white-space: nowrap;
 }
 
 /* this svg is logo */
 #intro svg {
   width: 100%;
   max-height: 33vh;
-  margin-bottom: 0.5rem;
   transition: max-height 0.5s;
+  margin-bottom: var(--s-leading);
 }
 
 /* Log component */
@@ -93,12 +105,15 @@ body.is-scrolling #status-scrolling {
 #log {
   list-style: none;
   margin: 0;
-  padding: 0;
-  padding-bottom: 2rem;
+  padding: 0 0 var(--s-leading-double);
 }
 
 #log li {
-  white-space: nowrap;
+  white-space: pre-line;
+}
+
+#log li:not(:first-child) {
+  margin-top: var(--s-leading-half);
 }
 
 #log neg,
@@ -115,17 +130,25 @@ body.is-scrolling #status-scrolling {
 }
 
 #log em {
-  font-style: normal;
   font-weight: bold;
+}
+
+#log i,
+#log em {
+  font-style: normal;
 }
 
 /* these svgs are icons */
 #log svg {
-  height: 1em;
-  width: 1em;
+  height: var(--s-leading);
+  width: 1.125rem;
   display: inline-block;
-  vertical-align: -0.1em;
-  margin-right: 0.1em;
+  vertical-align: top;
+}
+
+#log svg,
+#log i {
+  margin-right: 0.125em;
 }
 
 #log svg.skull {
@@ -150,20 +173,21 @@ body.is-scrolling #status-scrolling {
   opacity: 0;
   margin: 0 auto;
   padding: 0;
-  background: var(--c-wood-bark);
+  background: var(--c-pampas);
   border-radius: 0.35rem;
   border-width: 0;
+  box-shadow: 0 0 0 0.1rem var(--c-wood-bark);
 }
 
 #outro button label {
   pointer-events: none;
   display: inline-block;
-  padding: 0.125rem 0.75rem;
+  padding: 0.25rem 0.75rem 0.375rem;
   margin-bottom: 0.5rem;
   border-radius: 0.3rem;
-  color: var(--c-pampas);
-  background-color: var(--c-wood-bark);
-  box-shadow: 0 0 0 0.1rem var(--c-pampas);
+  color: var(--c-wood-bark);
+  background-color: var(--c-pampas);
+  box-shadow: 0 0 0 0.1rem var(--c-wood-bark);
 }
 
 #outro button:hover {
@@ -184,8 +208,8 @@ body.is-scrolling #status-scrolling {
 
 body.is-over #outro {
   max-height: 100vh;
-  padding-top: 2rem;
-  padding-bottom: 4rem;
+  padding-top: 0.1rem;
+  padding-bottom: calc(var(--s-leading) * 3);
 }
 
 body.is-over #outro button {
@@ -210,12 +234,13 @@ body.is-over #outro button {
   }
 
   #outro button {
-    background: var(--c-pampas);
+    background: var(--c-wood-bark);
+    box-shadow: 0 0 0 0.1rem var(--c-pampas);
   }
 
   #outro button label {
-    color: var(--c-wood-bark);
-    background-color: var(--c-pampas);
-    box-shadow: 0 0 0 0.1rem var(--c-wood-bark);
+    color: var(--c-pampas);
+    background-color: var(--c-wood-bark);
+    box-shadow: 0 0 0 0.1rem var(--c-pampas);
   }
 }

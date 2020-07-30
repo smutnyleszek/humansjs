@@ -1,7 +1,7 @@
 {
   "name": "exisim",
   "short_name": "exisim",
-  "description": "Zero-player human existence simulator",
+  "description": "Partially scientific zero-player human existence simulator",
   "lang": "en-US",
   "start_url": "/",
   "display": "standalone",
