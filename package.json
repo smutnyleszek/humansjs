@@ -10,7 +10,7 @@
   "homepage": "https://github.com/magicznyleszek/exisim",
   "repository": "git+https://github.com/magicznyleszek/exisim.git",
   "bugs": "https://github.com/magicznyleszek/exisim/issues",
-  "license": "CC0-1.0",
+  "license": "EUPL-1.2",
   "scripts": {
     "test": "jest && npm run test-syntax",
     "test-syntax": "prettier --check source",
